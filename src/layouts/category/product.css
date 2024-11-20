@@ -1,0 +1,37 @@
+.table-container {
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+  
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  .products-table th,
+  .products-table td {
+    padding: 0.2rem;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .products-table th {
+    background-color: #17c1e8;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  .products-table td {
+    font-size: 13px;
+  }
+  
+  .products-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .products-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  

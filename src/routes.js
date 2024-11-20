@@ -20,6 +20,7 @@ import Cube from "examples/Icons/Cube";
 
 import Product from "layouts/product";
 import { layouts } from "chart.js";
+import { Category } from "@mui/icons-material";
 
 const token = localStorage.getItem("token");
 
@@ -58,6 +59,15 @@ const routes = [
     route: "/products",
     icon: <Office size="12px" />,
     component: <Product />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Categories",
+    key: "categories",
+    route: "/categories",
+    icon: <Office size="12px" />,
+    component: <Category />,
     noCollapse: true,
   },
   {
