@@ -15,7 +15,7 @@ import Footer from "examples/Footer";
 
 import "./product.css";
 
-function Products() {
+function Categories() {
   const columns = ["Product Name", "Category", "Price", "Stock", "Actions"];
   const rows = [
     { name: "Sample Product", category: "Sample Category", price: "$100", stock: 10 },
@@ -73,4 +73,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Categories;

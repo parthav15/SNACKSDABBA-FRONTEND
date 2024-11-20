@@ -20,7 +20,7 @@ import Cube from "examples/Icons/Cube";
 
 import Product from "layouts/product";
 import { layouts } from "chart.js";
-import { Category } from "@mui/icons-material";
+import Category from "layouts/category";
 
 const token = localStorage.getItem("token");
 
