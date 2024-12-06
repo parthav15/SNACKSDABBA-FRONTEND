@@ -104,7 +104,7 @@ function BaseLayout({ children }) {
         </SoftBox>
       </SoftBox>
       <SoftBox pb={2} pt={0.25}>
-        <Footer />
+        {/* <Footer /> */}
       </SoftBox>
     </SoftBox>
   );

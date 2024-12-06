@@ -135,7 +135,7 @@ function Dashboard() {
           </Grid>
         </Grid>
       </SoftBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

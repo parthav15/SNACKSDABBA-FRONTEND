@@ -178,7 +178,7 @@ function Overview() {
         </Card>
       </SoftBox>
 
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

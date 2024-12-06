@@ -156,7 +156,7 @@ function RTL() {
           </Grid>
         </Grid>
       </SoftBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

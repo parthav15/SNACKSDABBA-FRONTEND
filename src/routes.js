@@ -22,6 +22,8 @@ import Product from "layouts/product";
 import { layouts } from "chart.js";
 import Category from "layouts/category";
 
+import { FaBox, FaTags } from 'react-icons/fa';
+
 const token = localStorage.getItem("token");
 
 const routes = [
@@ -57,7 +59,7 @@ const routes = [
     name: "Products",
     key: "products",
     route: "/products",
-    icon: <Office size="12px" />,
+    icon: <FaBox size="12px" />,
     component: <Product />,
     noCollapse: true,
   },
@@ -66,7 +68,7 @@ const routes = [
     name: "Categories",
     key: "categories",
     route: "/categories",
-    icon: <Office size="12px" />,
+    icon: <FaTags size="12px" />,
     component: <Category />,
     noCollapse: true,
   },

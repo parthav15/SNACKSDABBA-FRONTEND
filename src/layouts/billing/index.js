@@ -83,7 +83,7 @@ function Billing() {
           </Grid>
         </SoftBox>
       </SoftBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }
