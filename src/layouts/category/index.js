@@ -31,7 +31,9 @@ function Categories() {
   const [animateTable, setAnimateTable] = useState(false);
 
   useEffect(() => {
-    fetch(`${BASE_URL}admin_panel/category_list/`)
+    fetch(`${BASE_URL}admin_panel/category_list/`, {
+      method: "POST",
+    })
       .then((response) => response.json())
       .then((data) => {
         setRows(data.categories);
@@ -78,10 +80,10 @@ function Categories() {
   const handleSubmit = (formData) => {
     const url = modalMode === "add" 
       ? `${BASE_URL}admin_panel/add_category/`
-      : `${BASE_URL}admin_panel/edit_category/${selectedCategory.id}/`;
+      : `${BASE_URL}admin_panel/update_category/${selectedCategory.id}/`;
 
     fetch(url, {
-      method: modalMode === "add" ? "POST" : "PUT",
+      method: modalMode === "add" ? "POST" : "POST",
       body: formData,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

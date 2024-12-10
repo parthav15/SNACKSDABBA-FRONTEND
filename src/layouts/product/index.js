@@ -31,6 +31,7 @@ function Products() {
   const fetchProducts = () => {
     const token = localStorage.getItem("token");
     fetch(`${BASE_URL}admin_panel/product_list/`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
