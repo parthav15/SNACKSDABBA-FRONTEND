@@ -12,7 +12,7 @@ import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-import ProductModal from "./ProductModal"; // Import the ProductModal component
+import ProductModal from "./ProductModal";
 import "./product.css";
 import { BASE_URL } from "config";
 
@@ -46,7 +46,7 @@ function Products() {
   };
 
   const handleAddProduct = () => {
-    setCurrentProduct(null); // Reset current product
+    setCurrentProduct(null);
     setModalMode("add");
     setModalOpen(true);
   };

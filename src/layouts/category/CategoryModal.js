@@ -12,7 +12,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
+  width: {
+    xs: "100%",
+    sm: "80%",
+    md: "60%",
+    lg: "90%",
+  },
   bgcolor: "background.paper",
   borderRadius: 4,
   boxShadow: 24,
@@ -41,7 +46,7 @@ const CategoryModal = ({ isOpen, onClose, onSubmit, category, mode }) => {
 
   const handleFormSubmit = () => {
     const formData = new FormData();
-    formData.append("name", name);
+    formData.append("category_name", name);
     formData.append("description", description);
     if (image) formData.append("image", image);
 

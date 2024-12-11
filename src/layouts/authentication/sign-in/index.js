@@ -43,7 +43,7 @@ function SignIn() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        window.location.href = "/dashboard";
+        window.location.href = "/admin/dashboard";
       } else {
         setError(data.error);
       }
@@ -57,7 +57,7 @@ function SignIn() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      window.location.href = "/dashboard";
+      window.location.href = "/admin/dashboard";
     }
   })
 

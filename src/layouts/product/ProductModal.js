@@ -15,17 +15,30 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1200,
+  width: {
+    xs: "100%",
+    sm: "80%",
+    md: "60%",
+    lg: "90%",
+  },
+  height: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 2,
   borderRadius: 2,
+  overflowY: "auto",
 };
 
 const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [discountPrice, setDiscountPrice] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [attributes, setAttributes] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [brand, setBrand] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -35,7 +48,9 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${BASE_URL}admin_panel/category_list/`);
+        const response = await fetch(`${BASE_URL}admin_panel/category_list/`, {
+          method: "POST",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch categories");
         }
@@ -60,6 +75,12 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
       setName(product.name || "");
       setDescription(product.description || "");
       setPrice(product.price || "");
+      setDiscountPrice(product.discount_price || "");
+      setVideoUrl(product.video_url || "");
+      setAttributes(product.attributes || "");
+      setIsFeatured(product.is_featured || false);
+      setRating(product.rating || 0);
+      setBrand(product.brand || "");
       setStock(product.stock || "");
 
       const selectedCategory = categories.find(
@@ -75,6 +96,12 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
       setName("");
       setDescription("");
       setPrice("");
+      setDiscountPrice("");
+      setVideoUrl("");
+      setAttributes("");
+      setIsFeatured(false);
+      setRating(0);
+      setBrand("");
       setStock("");
       setCategory(null);
       setImages([]);
@@ -86,7 +113,6 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
     const selectedFiles = Array.from(e.target.files);
     setImages(selectedFiles);
 
-    // Preview new uploaded images
     const newPreviews = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
@@ -96,8 +122,14 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
   const handleSubmit = () => {
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("description", description); // Quill stores HTML, so this is fine
+    formData.append("description", description);
     formData.append("price", price);
+    formData.append("discount_price", discountPrice);
+    formData.append("video_url", videoUrl);
+    formData.append("attributes", attributes);
+    formData.append("is_featured", isFeatured);
+    formData.append("rating", rating);
+    formData.append("brand", brand);
     formData.append("stock", stock);
     formData.append("category_id", category?.id || "");
     images.forEach((image) => formData.append("image", image));
@@ -124,6 +156,51 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
           theme="snow"
           style={{ height: "150px", width: "100%" }}
         />
+        <TextField
+          fullWidth
+          placeholder="Price"
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          placeholder="Discount Price"
+          type="number"
+          value={discountPrice}
+          onChange={(e) => setDiscountPrice(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          placeholder="Video URL"
+          value={videoUrl}
+          onChange={(e) => setVideoUrl(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          placeholder="Attributes"
+          value={attributes}
+          onChange={(e) => setAttributes(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          placeholder="Brand"
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          placeholder="Rating"
+          type="number"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          margin="normal"
+        />
         <Autocomplete
           fullWidth
           options={categories}
@@ -142,21 +219,18 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
         />
         <TextField
           fullWidth
-          placeholder="Price"
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          margin="normal"
-        />
-        <TextField
-          fullWidth
           placeholder="Stock"
           type="number"
           value={stock}
           onChange={(e) => setStock(e.target.value)}
           margin="normal"
         />
-        <Button variant="contained" component="label" sx={{ mt: 2 }} style={{ color: "white" }}>
+        <Button
+          variant="contained"
+          component="label"
+          sx={{ mt: 2 }}
+          style={{ color: "white" }}
+        >
           Upload Images
           <input type="file" hidden multiple onChange={handleImageChange} />
         </Button>
@@ -166,7 +240,12 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
               key={index}
               src={src}
               alt={`Preview ${index}`}
-              style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }}
+              style={{
+                width: "80px",
+                height: "80px",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
             />
           ))}
         </Box>

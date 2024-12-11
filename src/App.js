@@ -101,13 +101,13 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-        {/* Only show sidenav and configurator if not on the home route */}
-        {!isHome && (
+        {/* Only show sidenav and configurator on the admin route */}
+        {isAdmin && (
           <>
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Admin Panel"
+              brandName="Snacks Dabba"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
@@ -125,13 +125,13 @@ export default function App() {
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* Only show sidenav and configurator if not on the home route */}
-      {!isHome && (
+      {/* Only show sidenav and configurator on the admin route */}
+      {isAdmin && (
         <>
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Frontend Home"
+            brandName="Snacks Dabba"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
