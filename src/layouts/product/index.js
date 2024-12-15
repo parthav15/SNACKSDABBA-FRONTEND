@@ -4,7 +4,11 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
 
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
@@ -23,6 +27,8 @@ function Products() {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [modalMode, setModalMode] = useState("add");
   const [animateTable, setAnimateTable] = useState(false);
+  const [deleteProductConfirmOpen, setDeleteProductConfirmOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     fetchProducts();
@@ -90,6 +96,31 @@ function Products() {
       .catch((error) => console.error(error));
   };
 
+  const handleDeleteProduct = () => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("product_id", selectedProduct.id);
+
+    fetch(`${BASE_URL}admin_panel/delete_product/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete product");
+        }
+        return response.json();
+      })
+      .then(() => {
+        setRows(rows.filter((row) => row.id !== selectedProduct.id));
+        setDeleteProductConfirmOpen(false);
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -132,7 +163,14 @@ function Products() {
                         >
                           <EditIcon />
                         </IconButton>
-                        <IconButton color="error" aria-label="delete product">
+                        <IconButton
+                          color="error"
+                          aria-label="delete product"
+                          onClick={() => {
+                            setSelectedProduct(row);
+                            setDeleteProductConfirmOpen(true);
+                          }}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </td>
@@ -145,19 +183,38 @@ function Products() {
         </SoftBox>
       </SoftBox>
 
-      {/* Product Modal */}
+      <Dialog
+        open={deleteProductConfirmOpen}
+        onClose={() => setDeleteProductConfirmOpen(false)}
+      >
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this product?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteProductConfirmOpen(false)} color="primary">
+            No
+          </Button>
+          <Button onClick={handleDeleteProduct} color="secondary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {modalOpen && (
         <ProductModal
-        isOpen={modalOpen}
-        onClose={handleModalClose}
-        onSubmit={handleModalSubmit}
-        product={currentProduct}
-        mode={modalMode}
-        categories={rows.map((row) => ({
-          id: row.category_id,
-          name: row.category__name,
-        }))}
-      />
+          isOpen={modalOpen}
+          onClose={handleModalClose}
+          onSubmit={handleModalSubmit}
+          product={currentProduct}
+          mode={modalMode}
+          categories={rows.map((row) => ({
+            id: row.category_id,
+            name: row.category__name,
+          }))}
+        />
       )}
     </DashboardLayout>
   );

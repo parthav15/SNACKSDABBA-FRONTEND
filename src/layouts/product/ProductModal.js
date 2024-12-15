@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -193,6 +194,47 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
           onChange={(e) => setBrand(e.target.value)}
           margin="normal"
         />
+        <Box mt={2}>
+          <Typography variant="subtitle1">Featured</Typography>
+          <Box display="flex" gap={2} width="20%">
+            <Card
+              variant="outlined"
+              sx={{
+                width: "50%",
+                height: 50,
+                cursor: "pointer",
+                backgroundColor: isFeatured ? "#17c1e8" : "transparent",
+                borderColor: isFeatured ? "#17c1e8" : "divider",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={() => setIsFeatured(true)}
+            >
+              <Typography variant="body2" color={isFeatured ? "white" : "textSecondary"}>
+                Yes
+              </Typography>
+            </Card>
+            <Card
+              variant="outlined"
+              sx={{
+                width: "50%",
+                height: 50,
+                cursor: "pointer",
+                backgroundColor: !isFeatured ? "#17c1e8" : "transparent",
+                borderColor: !isFeatured ? "#17c1e8" : "divider",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={() => setIsFeatured(false)}
+            >
+              <Typography variant="body2" color={!isFeatured ? "white" : "textSecondary"}>
+                No
+              </Typography>
+            </Card>
+          </Box>
+        </Box>
         <TextField
           fullWidth
           placeholder="Rating"

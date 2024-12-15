@@ -9,10 +9,11 @@ import SignUp from "layouts/authentication/sign-up";
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import CreditCard from "examples/Icons/CreditCard";
-import { FaBox, FaTags } from 'react-icons/fa';
+import { FaBox, FaTags, FaUsers } from 'react-icons/fa';
 
 import Products from "layouts/product";
 import Categories from "layouts/category";
+import Users from "layouts/user";
 
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
@@ -77,6 +78,14 @@ const routes = [
     component: <Categories />,
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Users",
+    key: "users",
+    route: "/admin/users",
+    icon: <FaUsers size="12px" />,
+    component: <Users />,
+  },
   
   // Authentication Routes
   {
@@ -88,15 +97,15 @@ const routes = [
     component: <SignIn />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    icon: <SpaceShip size="12px" />,
-    component: <SignUp />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Sign Up",
+  //   key: "sign-up",
+  //   route: "/authentication/sign-up",
+  //   icon: <SpaceShip size="12px" />,
+  //   component: <SignUp />,
+  //   noCollapse: true,
+  // },
 ];
 
 if (token) {

@@ -5,6 +5,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SoftTypography from "components/SoftTypography";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 import { BASE_URL } from "config";
 
 const style = {
@@ -72,14 +76,12 @@ const CategoryModal = ({ isOpen, onClose, onSubmit, category, mode }) => {
           onChange={(e) => setName(e.target.value)}
           margin="normal"
         />
-        <TextField
-          fullWidth
-          placeholder="Description"
+        <ReactQuill
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          margin="normal"
-          multiline
-          rows={3}
+          onChange={setDescription}
+          placeholder="Write a description..."
+          theme="snow"
+          style={{ height: "150px", width: "100%" }}
         />
         <Box mt={2} display="flex" alignItems="center">
           <Button variant="contained" component="label" sx={{ mt: 2 }} style={{ color: "white" }}>

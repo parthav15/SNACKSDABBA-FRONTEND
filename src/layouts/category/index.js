@@ -22,7 +22,7 @@ import "./category.css";
 import { BASE_URL } from "config";
 
 function Categories() {
-  const columns = ["S. No.", "Category Name", "Description", "Image", "Actions"];
+  const columns = ["S. No.", "Category Name", "Description", "Actions"];
   const [rows, setRows] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -124,13 +124,6 @@ function Categories() {
                       <td>{index + 1}</td>
                       <td>{row.name}</td>
                       <td>{row.description}</td>
-                      <td>
-                        <img
-                          src={`${BASE_URL}media/${row.image}`}
-                          alt="Category"
-                          style={{ borderRadius: "50%", width: "50px", height: "50px" }}
-                        />
-                      </td>
                       <td>
                         <IconButton
                           color="secondary"
