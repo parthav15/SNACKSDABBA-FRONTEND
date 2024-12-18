@@ -1,9 +1,13 @@
 import React from "react";
+import Navbar from "layouts/frontendHeader/Navbar.js";
 
 const FrontendHome = () => {
   return (
     <div>
-      <h1>This is Frontend Home Page</h1>
+      <Navbar />
+      <div>
+        <h1>This is Frontend Home Page</h1>
+      </div>
     </div>
   );
 };
