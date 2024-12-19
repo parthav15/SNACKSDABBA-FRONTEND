@@ -25,10 +25,10 @@ const Navbar = () => {
     const searchBox = document.getElementById("search-box");
     searchBox.style.boxShadow = "0px 4px 20px #0d9488";
     searchBox.style.transition = "box-shadow 0.3s ease-in-out, border-radius 0.3s ease-in-out";
-
-    setTimeout(() => {
-      searchBox.style.boxShadow = "none";
-    }, 3000);
+  };
+  const removeSearchBgEffect = () => {
+    const searchBox = document.getElementById("search-box");
+    searchBox.style.boxShadow = "none";
   };
 
   return (
@@ -47,7 +47,12 @@ const Navbar = () => {
       >
         {/* Logo */}
         <div className="flex-shrink-0">
-          <img src="./favicon.png" alt="Logo" className="w-28" style={{ marginTop: "-0.8rem" }} />
+          <img 
+            src="./favicon.png" 
+            alt="Logo" 
+            className="w-28 transition-transform duration-300 ease-in-out hover:scale-110" 
+            style={{ marginTop: "-0.8rem" }} 
+          />
         </div>
 
         {/* Search Box */}
@@ -55,7 +60,6 @@ const Navbar = () => {
           id="search-box"
           className="flex items-center  w-full max-w-2xl"
           style={{ marginTop: "-0.8rem" }}
-          onClick={searchBgEffect}
         >
           <select
             value={category}
@@ -71,6 +75,8 @@ const Navbar = () => {
             type="text"
             placeholder="Search for products..."
             className="flex-grow border border-gray-600 py-2 px-3 text-sm focus:ring-teal-600 focus:outline-none"
+            onFocus={searchBgEffect}
+            onBlur={removeSearchBgEffect}
           />
           <button className="bg-primary text-white py-2 px-3 h-[38px] hover:shadow-lg hover:bg-secondary focus:bg-primary  focus:outline-none transition duration-300 ease-in-out leading-3">
             Search

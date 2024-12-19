@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
@@ -25,6 +28,7 @@ function Users() {
     "Date Joined",
     "Last Login",
     "Two Factor",
+    "Actions"
   ];
   const [rows, setRows] = useState([]);
   const [animateTable, setAnimateTable] = useState(false);
@@ -46,6 +50,27 @@ function Users() {
       .then((data) => {
         setRows(data.user_list);
         setAnimateTable(true);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleToggleUser = (row) => {
+    const token = localStorage.getItem("token");
+    fetch(`${BASE_URL}admin_panel/users_list_toggle/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        id: row.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          fetchUsers();
+        }
       })
       .catch((error) => console.error(error));
   };
@@ -87,6 +112,14 @@ function Users() {
                             checked={row.two_factor}
                             onChange={() => handleToggleUser(row)}
                           />
+                        </td>
+                        <td>
+                          <IconButton color="primary">
+                            <VisibilityIcon />
+                          </IconButton>
+                          <IconButton color="error">
+                            <EditIcon />
+                          </IconButton>
                         </td>
                       </tr>
                     ))}
