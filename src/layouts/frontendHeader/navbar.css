@@ -1,0 +1,17 @@
+.wishlist-container {
+  display: block;
+}
+
+.wishlist-card {
+  position: absolute;
+  padding: 8px 10px;
+  height: 200px;
+  width: 150px;
+  color: black;
+  border: 3px solid rgb(68, 184, 172);
+  background-color: white;
+  border-radius: 10px;
+  margin-left: -6%;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
