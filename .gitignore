@@ -26,4 +26,4 @@ yarn.lock
 
 commit.sh
 
-config.js
+src/config.js
