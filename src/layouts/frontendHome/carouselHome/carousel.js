@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './carousel.css';
 import PropTypes from 'prop-types';
 import { BASE_URL } from 'config';
-import next from '../../../assets/images/right-arrow.png'
-import prev from '../../../assets/images/left-arrow.png'
+import next from '../../../assets/images/right-arrow.png';
+import prev from '../../../assets/images/left-arrow.png';
 
 const Carousel = ({ autoSlide = true, slideInterval = 3000 }) => {
-  const [slides, setSlides] = useState([]);  
-  const [loading, setLoading] = useState(true);  
-  const [error, setError] = useState(null); 
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -65,22 +65,32 @@ const Carousel = ({ autoSlide = true, slideInterval = 3000 }) => {
 
   return (
     <div className="carousel">
-      <button className="prev btn" onClick={prevSlide}><img src={prev} className='arrow-next arrow' /></button>
-      <div className="carousel-content">
-          <div key={slides[currentIndex].id} className="carousel-slide">
+      <button className="prev btn" onClick={prevSlide}>
+        <img src={prev} className="arrow" />
+      </button>
+      <div className="carousel-content" style={{ transform: `translateX(${-currentIndex * 100}%)` }}>
+        {slides.map((slide, index) => (
+          <div key={slide.id} className="carousel-slide">
             <img
-              src={`${BASE_URL}/media/${slides[currentIndex].image}`}
-              alt={slides[currentIndex].alt_text || `Slide ${slides[currentIndex] + 1}`}
+              src={`${BASE_URL}/media/${slide.image}`}
+              alt={slide.alt_text || `Slide ${index + 1}`}
               className="carousel-image"
-              
+              loading="lazy"
             />
-            {/* {slides[currentIndex].caption && (
-              <div className="carousel-caption">{slides[currentIndex].caption}</div>
-            )} */}
           </div>
+        ))}
+      </div>
+      <div className="carousel-dots">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            className={`dot ${index === currentIndex ? 'active' : ''}`}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
       </div>
       <button className="next btn" onClick={nextSlide}>
-        <img src={next} className='arrow-next arrow' />
+        <img src={next} className="arrow" />
       </button>
     </div>
   );

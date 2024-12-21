@@ -6,13 +6,17 @@
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  /* z-index: -1; */
 }
 
 .carousel-content {
-  position: relative;
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: 100%;
-  text-align: center;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  flex-shrink: 0;
 }
 
 .carousel-image {
@@ -22,23 +26,35 @@
   object-fit: fill;
 }
 
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+}
+
+button.dot {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.dot.active {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 .arrow {
   width: 20px;
   filter: invert(40%);
 }
 
-.carousel-caption {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  color: white;
-  font-size: 20px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
-
 button.btn {
-  /* background-color: rgba(0, 0, 0, 0.5); */
   color: white;
   border: none;
   padding: 10px;
@@ -49,12 +65,6 @@ button.btn {
   cursor: pointer;
   z-index: 10;
   border-radius: 50%;
-
-  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
-}
-
-button.btn:hover {
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 button.prev {
