@@ -9,11 +9,12 @@ import SignUp from "layouts/authentication/sign-up";
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import CreditCard from "examples/Icons/CreditCard";
-import { FaBox, FaTags, FaUsers } from 'react-icons/fa';
+import { FaBox, FaTags, FaUsers, FaImages } from 'react-icons/fa';
 
 import Products from "layouts/product";
 import Categories from "layouts/category";
 import Users from "layouts/user";
+import CarouselImages from "layouts/carousel_images";
 
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
@@ -86,6 +87,14 @@ const routes = [
     icon: <FaUsers size="12px" />,
     component: <Users />,
   },
+  {
+    type: "collapse",
+    name: "Carousel Images",
+    key: "carousel-images",
+    route: "/admin/carousel_images",
+    icon: <FaImages size="12px" />,
+    component: <CarouselImages />,
+  },
   
   // Authentication Routes
   {
@@ -113,3 +122,4 @@ if (token) {
 }
 
 export default routes;
+
