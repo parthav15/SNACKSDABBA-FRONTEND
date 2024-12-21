@@ -3,7 +3,7 @@ import { FaHeart, FaShoppingCart, FaUserCircle, FaInstagram, FaFacebook } from "
 import { FaXTwitter } from "react-icons/fa6";
 import "../../tailwind-css/input.css";
 import "./navbar.css";
-import { LoginModal, RegisterModal } from "./index.js";
+import { LoginModal, RegisterModal } from "./LoginRegisterModal.js";
 
 const Navbar = () => {
   const AnimatedText = () => {
@@ -196,8 +196,6 @@ const Navbar = () => {
             <div className="text-sm font-semibold -mx-5">
               <div>
                 <LoginModal />
-              </div>
-              <div>
                 <RegisterModal />
               </div>
             </div>
@@ -209,4 +207,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
