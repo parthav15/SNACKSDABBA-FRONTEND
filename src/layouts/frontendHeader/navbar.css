@@ -55,6 +55,7 @@
   margin-left: -6%;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  z-index: 10;
 }
 .wishlist-card.show {
   visibility: visible;

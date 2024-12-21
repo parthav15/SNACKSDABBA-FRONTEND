@@ -1,11 +1,16 @@
 import React from "react";
+
+import Carousel from "./carouselHome/carousel.js";
 import Navbar from "layouts/frontendHeader/navbar.js";
 
+
 const FrontendHome = () => {
+
+ 
   return (
     <div>
       <Navbar />
-      <div>{/* <h1>This is Frontend Home Page</h1> */}</div>
+      <Carousel />
     </div>
   );
 };
