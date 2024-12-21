@@ -8,12 +8,17 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
     setIsRightPanelActive(initialPannel === "signUp");
   }, [initialPannel]);
 
+  const handleModalClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
     <div
       onClick={onClose}
       className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 z-40"
     >
       <div
+        onClick={handleModalClick}
         className={`bg-white rounded-lg shadow-2xl relative overflow-hidden w-full max-w-4xl min-h-[480px] ${
           isRightPanelActive ? "right-panel-active" : ""
         }`}
@@ -176,7 +181,7 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
 
 LoginRegisterModalContent.propTypes = {
   onClose: PropTypes.func.isRequired,
-  initialPannel: PropTypes.func.ios, // Define `onClose` as a required function prop
+  initialPannel: PropTypes.string.isRequired,
 };
 
 export default LoginRegisterModalContent;
