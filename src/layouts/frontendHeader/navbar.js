@@ -6,17 +6,15 @@ import "./navbar.css";
 import { LoginModal, RegisterModal } from "./index.js";
 
 const Navbar = () => {
-  //Animated text above Navbar
-
   const AnimatedText = () => {
     const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
-    const texts = ["WELCOME TO SNACKS DABBA", " Cash On Delivery on orders above Rs.499"]; // Your texts
+    const texts = ["WELCOME TO SNACKS DABBA", " Cash On Delivery on orders above Rs.499"];
 
     useEffect(() => {
       const interval = setInterval(() => {
-        setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length); // Cycle through texts
-      }, 10000); // 10 seconds delay
+        setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+      }, 5000);
       return () => clearInterval(interval);
     }, [texts.length]);
 
@@ -29,7 +27,6 @@ const Navbar = () => {
     );
   };
 
-  // State for the category selector
   const [category, setCategory] = useState("all");
 
   const handleCategoryChange = (event) => {
@@ -103,7 +100,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex   px-2 py-4 bg-black text-white">
+      <div className="flex bg-teal-600 px-2 py-2 text-white">
         <div className="flex gap-3 ml-4 mt-1">
           <FaFacebook />
           <FaInstagram />
@@ -147,7 +144,7 @@ const Navbar = () => {
               onChange={handleCategoryChange}
               className="border  border-gray-600  py-2 px-3 text-sm h-[38px] focus:ring-teal-600 focus:outline-none border-r-0  "
             >
-              <option value="all">All</option>``
+              <option value="all">All</option>
               <option value="electronics">Electronics</option>
               <option value="fashion">Fashion</option>
               <option value="home">Home</option>
@@ -212,3 +209,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
