@@ -1,0 +1,118 @@
+@keyframes snowGather {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+  }
+  
+  @keyframes snowSpread {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+      filter: blur(10px);
+    }
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    animation: snowGather 1s forwards;
+  }
+  
+  .modal-container {
+    background: #ffffff;
+    width: 95%;
+    max-width: 1000px;
+    height: 75vh;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+    z-index: 9999999999;
+    overflow-y: auto;
+    animation: snowGather 1s forwards;
+  }
+  
+  .modal-overlay.close-animation,
+  .modal-container.close-animation {
+    animation: snowSpread 1s forwards;
+  }
+  
+  .modal-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333333;
+  }
+  
+  .modal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-section p {
+    margin: 5px 0;
+    font-size: 12px;
+  }
+  
+  .status-pill,
+  .payment-pill {
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+  }
+  
+  .status-pill {
+    background: #eaf3ff;
+    color: #0366d6;
+  }
+  
+  .payment-pill {
+    background: #eaffea;
+    color: #28a745;
+  }
+  
+  .modal-subheader {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #444444;
+  }
+  
+  .modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  
+  .modal-table th,
+  .modal-table td {
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    font-size: 12px;
+  }
+  
+  .modal-table th {
+    background: #f8f8f8;
+    font-weight: bold;
+  }
+  

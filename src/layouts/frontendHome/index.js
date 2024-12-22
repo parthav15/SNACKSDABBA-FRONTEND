@@ -1,7 +1,6 @@
 import React from "react";
-
-import Carousel from "./carouselHome/carousel.js";
-import Navbar from "layouts/frontendHeader/navbar.js";
+import Navbar from "layouts/frontendHeader/Navbar/navbar.js";
+import Header from "layouts/frontendHeader/index.js";
 
 
 const FrontendHome = () => {
@@ -10,7 +9,8 @@ const FrontendHome = () => {
   return (
     <div>
       <Navbar />
-      <Carousel />
+      {/* <Carousel /> */}
+      <Header />
     </div>
   );
 };

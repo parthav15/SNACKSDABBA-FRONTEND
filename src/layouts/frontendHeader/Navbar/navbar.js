@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart, FaUserCircle, FaInstagram, FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import "../../tailwind-css/input.css";
+import "../../../tailwind-css/input.css";
 import "./navbar.css";
-import { LoginModal, RegisterModal } from "./LoginRegisterModal.js";
+import { LoginModal, RegisterModal } from "layouts/frontendHeader/LoginRegister/LoginRegisterModal.js";
 
 const Navbar = () => {
   const AnimatedText = () => {

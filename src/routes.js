@@ -20,6 +20,7 @@ import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 
 import FrontendHome from "layouts/frontendHome";
+import Orders from "layouts/orders";
 
 const token = localStorage.getItem("token");
 
@@ -77,6 +78,15 @@ const routes = [
     route: "/admin/categories",
     icon: <FaTags size="12px" />,
     component: <Categories />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Orders",
+    key: "orders",
+    route: "/admin/orders",
+    icon: <FaTags size="12px" />,
+    component: <Orders />,
     noCollapse: true,
   },
   {
