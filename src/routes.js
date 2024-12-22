@@ -9,7 +9,7 @@ import SignUp from "layouts/authentication/sign-up";
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
 import CreditCard from "examples/Icons/CreditCard";
-import { FaBox, FaTags, FaUsers, FaImages } from 'react-icons/fa';
+import { FaBox, FaTags, FaUsers, FaImages, FaShoppingCart } from 'react-icons/fa';
 
 import Products from "layouts/product";
 import Categories from "layouts/category";
@@ -85,7 +85,7 @@ const routes = [
     name: "Orders",
     key: "orders",
     route: "/admin/orders",
-    icon: <FaTags size="12px" />,
+    icon: <FaShoppingCart size="12px" />,
     component: <Orders />,
     noCollapse: true,
   },

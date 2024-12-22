@@ -26,45 +26,29 @@ const OrderDetailModal = ({ open, onClose, orderData }) => {
       >
         <h2 className="modal-header">Order Details</h2>
         <div className="modal-grid">
-          <div className="modal-section">
-            <p>
-              <strong>Customer:</strong> {orderData.user?.first_name}{" "}
-              {orderData.user?.last_name}
-            </p>
-            <p>
-              <strong>Email:</strong> {orderData.user?.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {orderData.user?.phone_number}
-            </p>
-          </div>
-          <div className="modal-section">
-            <p>
-              <strong>Total Price:</strong> ${orderData.total_price}
-            </p>
-            <p>
-              <strong>Discount:</strong> ${orderData.discount_amount}
-            </p>
-            <p>
-              <strong>Gift:</strong> {orderData.is_gift ? "Yes" : "No"}
-            </p>
-          </div>
-          <div className="modal-section">
-            <p>
-              <strong>Status:</strong>{" "}
-              <span className="status-pill">{orderData.status}</span>
-            </p>
-            <p>
-              <strong>Payment Status:</strong>{" "}
-              <span className="payment-pill">{orderData.payment_status}</span>
-            </p>
-            <p>
-              <strong>Payment Method:</strong> {orderData.payment_method || "N/A"}
-            </p>
-            <p>
-              <strong>Tracking Number:</strong>{" "}
-              {orderData.tracking_number || "N/A"}
-            </p>
+          <div className="modal-grid">
+            {[
+              { label: "Name", data: `${orderData.user?.first_name} ${orderData.user?.last_name}` },
+              { label: "Email", data: orderData.user?.email },
+              { label: "Phone", data: orderData.user?.phone_number },
+              { label: "Username", data: orderData.user?.username },
+              { label: "Country", data: orderData.user?.country || "N/A" },
+              { label: "City", data: orderData.user?.city || "N/A" },
+              { label: "Address", data: orderData.user?.address || "N/A" },
+              { label: "Zip Code", data: orderData.user?.zip_code || "N/A" },
+              { label: "Total Price", data: `INR ${orderData.total_price}` },
+              { label: "Discount", data: `INR ${orderData.discount_amount}` },
+              { label: "Gift", data: orderData.is_gift ? "Yes" : "No" },
+              { label: "Status", data: orderData.status },
+              { label: "Payment Status", data: orderData.payment_status },
+              { label: "Payment Method", data: orderData.payment_method || "N/A" },
+              { label: "Tracking Number", data: orderData.tracking_number || "N/A" },
+            ].map((item, index) => (
+              <div className="info-card" key={index}>
+                <span className="label">{item.label}</span>
+                <span className="data">{item.data}</span>
+              </div>
+            ))}
           </div>
         </div>
         <h3 className="modal-subheader">Addresses</h3>
@@ -115,8 +99,8 @@ const OrderDetailModal = ({ open, onClose, orderData }) => {
               <tr key={item.id}>
                 <td>{item.product.name}</td>
                 <td>{item.quantity}</td>
-                <td>${item.product.price}</td>
-                <td>${item.subtotal}</td>
+                <td>INR {item.product.price}</td>
+                <td>INR {item.subtotal}</td>
               </tr>
             ))}
           </tbody>
@@ -133,3 +117,4 @@ OrderDetailModal.propTypes = {
 };
 
 export default OrderDetailModal;
+

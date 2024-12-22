@@ -12,6 +12,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import "./user.css";
+import UserDetailModal from "./UserDetailModal";
 
 import { BASE_URL } from "config";
 
@@ -32,6 +33,38 @@ function Users() {
   ];
   const [rows, setRows] = useState([]);
   const [animateTable, setAnimateTable] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewUser = (userId) => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("user_id", userId);
+
+    fetch(`${BASE_URL}admin_panel/user_detail/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        setSelectedUser(data.user_details);
+        setIsModalOpen(true);
+      } else {
+        console.error(data.message);
+      }
+    })
+    .catch((error) => console.error(error));
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+};
 
   useEffect(() => {
     fetchUsers();
@@ -114,7 +147,7 @@ function Users() {
                           />
                         </td>
                         <td>
-                          <IconButton color="primary">
+                          <IconButton color="primary" onClick={() => handleViewUser(row.id)}>
                             <VisibilityIcon />
                           </IconButton>
                           <IconButton color="error">
@@ -130,6 +163,11 @@ function Users() {
           </Card>
         </SoftBox>
       </SoftBox>
+      <UserDetailModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        userData={selectedUser}
+      />
     </DashboardLayout>
   );
 }
