@@ -1,9 +1,97 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { FcGoogle } from "react-icons/fc";
+import { BASE_URL } from "config";
 
 const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
   const [isRightPanelActive, setIsRightPanelActive] = useState(initialPannel === "signUp");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+  });
+
+  const debounceTimeout = useRef(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Clear previous timeout
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    // Update value immediately for typing feedback
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Set debounced update for final formData
+    debounceTimeout.current = setTimeout(() => {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+      console.log("Updated Form Data:", {
+        ...formData,
+        [name]: value,
+      });
+    }, 3000);
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/user_register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.email,
+          phone_number: formData.phone_number,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Registration Failed");
+      }
+
+      //Handle successfull Registration
+      localStorage.setItem("userToken", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          firstName: data.first_name,
+          email: data.email,
+        })
+      );
+      console.log("Stored user:", localStorage.getItem("userToken"));
+      onClose?.();
+    } catch (error) {
+      console.log(error.message, "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+    console.log("Register Successfull");
+  };
+  const handleLogin = () => {
+    console.log("Logined");
+  };
   useEffect(() => {
     setIsRightPanelActive(initialPannel === "signUp");
   }, [initialPannel]);
@@ -19,12 +107,12 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
     >
       <div
         onClick={handleModalClick}
-        className={`bg-white rounded-lg shadow-2xl relative overflow-hidden w-full max-w-4xl min-h-[480px] ${
+        className={`bg-white rounded-lg shadow-2xl relative overflow-hidden w-full max-w-4xl min-h-[550px] ${
           isRightPanelActive ? "right-panel-active" : ""
         }`}
       >
         {" "}
-        {/* Sign Up Container */}
+        {/* Register Container */}
         <div
           className={`absolute top-0 h-full transition-all duration-700 ease-in-out left-0 w-1/2 ${
             isRightPanelActive
@@ -32,46 +120,70 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
               : "opacity-0 z-10 translate-x-0"
           }`}
         >
-          <form className="bg-white flex flex-col items-center justify-center px-12 h-full text-center">
+          <form
+            onSubmit={handleRegister}
+            className="bg-white flex flex-col items-center justify-center py-10  px-12 h-full text-center"
+          >
             <h1 className="text-2xl font-bold mb-4">Create Account</h1>
-            <div className="flex justify-center space-x-4 my-5">
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-google-plus-g"></i>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-linkedin-in"></i>
-              </a>
+            <div className="flex justify-center space-x-4 my-5 -mt-1">
+              <button className="flex  gap-1 text-cyan-500 border border-cyan-500 rounded-full px-3 py-1.5  text-l font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-black hover:bg-opacity-5">
+                Login With
+                <span>
+                  <FcGoogle className="size-8" />
+                </span>
+              </button>
             </div>
-            <span className="text-sm mb-4">or use your email for registration</span>
-            <input
-              type="text"
-              placeholder="Name"
-              className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
-            />
-            <button className="bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-cyan-600">
-              Sign Up
+            <span className="text-sm mb-2 -mt-2">or use your email for registration</span>
+            <div className="">
+              <div className="flex gap-1">
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
+                />
+                <input
+                  type="text"
+                  name="last_name"
+                  value={formData.last_name}
+                  placeholder="Last Name"
+                  onChange={handleChange}
+                  className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
+                />
+              </div>
+              <input
+                type="text"
+                name="phone_number"
+                value={formData.phone_number}
+                placeholder="Phone Number"
+                onChange={handleChange}
+                className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
+              />
+
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                placeholder="Email"
+                onChange={handleChange}
+                className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-cyan-600"
+            >
+              Register
             </button>
           </form>
         </div>
@@ -81,29 +193,19 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
             isRightPanelActive ? "translate-x-full" : "translate-x-0"
           }`}
         >
-          <form className="bg-white flex flex-col items-center justify-center px-12 h-full text-center">
-            <h1 className="text-2xl font-bold mb-4">Sign in</h1>
+          <form
+            onSubmit={handleLogin}
+            className="bg-white flex flex-col items-center justify-center px-12 h-full text-center"
+          >
+            <h1 className="text-2xl font-bold mb-4">Sign In To Your Account</h1>
             <div className="flex justify-center space-x-4 my-5">
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-google-plus-g"></i>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 transition-colors duration-300"
-              >
-                <i className="fab fa-linkedin-in"></i>
-              </a>
+              <button className="flex  gap-1 text-cyan-500 border border-cyan-500 rounded-full -mt-4 px-4 py-2  text-l font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-black hover:bg-opacity-5">
+                Login With{" "}
+                <span>
+                  <FcGoogle className="size-8" />
+                </span>
+              </button>
             </div>
-            <span className="text-sm mb-4">or use your account</span>
             <input
               type="email"
               placeholder="Email"
@@ -120,8 +222,11 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
             >
               Forgot your password?
             </a>
-            <button className="bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-cyan-600">
-              Sign In
+            <button
+              type="submit"
+              className="bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-cyan-600"
+            >
+              Login
             </button>
           </form>
         </div>
@@ -148,10 +253,10 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
                 To keep connected with us please login with your personal info
               </p>
               <button
-                className="border border-white bg-transparent text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-white/10"
+                className="border border-white bg-transparent text-white rounded-full px-12 py-3  uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-white/10"
                 onClick={() => setIsRightPanelActive(false)}
               >
-                Sign In
+                Login
               </button>
             </div>
 
@@ -169,7 +274,7 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
                 className="border border-white bg-transparent text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-white/10"
                 onClick={() => setIsRightPanelActive(true)}
               >
-                Sign Up
+                Register
               </button>
             </div>
           </div>
