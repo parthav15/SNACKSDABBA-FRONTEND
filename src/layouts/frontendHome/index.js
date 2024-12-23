@@ -8,8 +8,8 @@ const FrontendHome = () => {
       <Navbar />
       {/* <Carousel /> */}
       <Header
-        autoSlide={false} // Set to true to enable auto-sliding
-        slideInterval={7000} // Set the slide interval (in milliseconds)
+        autoSlide={true} // Set to true to enable auto-sliding
+        slideInterval={5000} // Set the slide interval (in milliseconds)
       />
     </div>
   );
