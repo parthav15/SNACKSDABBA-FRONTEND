@@ -77,7 +77,9 @@ function CarouselImages() {
       formData.append("carousel_image_id", selectedImage.id);
     }
 
-    const url = `${BASE_URL}admin_panel/${modalMode === "add" ? "add_carousel_image/" : "update_carousel_image/"}`;
+    const url = `${BASE_URL}admin_panel/${
+      modalMode === "add" ? "add_carousel_image/" : "update_carousel_image/"
+    }`;
 
     fetch(url, {
       method: "POST",
@@ -118,10 +120,7 @@ function CarouselImages() {
                 />
                 <div className="hover-overlay">
                   <CardActions>
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleEditImage(image)}
-                    >
+                    <IconButton color="primary" onClick={() => handleEditImage(image)}>
                       <EditIcon />
                     </IconButton>
                     <IconButton
@@ -150,15 +149,10 @@ function CarouselImages() {
         />
 
         {/* Delete Confirmation Dialog */}
-        <Dialog
-          open={deleteConfirmOpen}
-          onClose={() => setDeleteConfirmOpen(false)}
-        >
+        <Dialog open={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this image?
-            </DialogContentText>
+            <DialogContentText>Are you sure you want to delete this image?</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setDeleteConfirmOpen(false)}>No</Button>
@@ -173,4 +167,3 @@ function CarouselImages() {
 }
 
 export default CarouselImages;
-

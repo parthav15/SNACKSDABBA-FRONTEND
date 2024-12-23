@@ -63,7 +63,7 @@ const CarouselImageModal = ({ isOpen, onClose, onSubmit, image, mode }) => {
       }
     };
     fetchProducts();
-    }, []);
+  }, []);
 
   useEffect(() => {
     if (mode === "edit" && image) {
@@ -163,18 +163,12 @@ const CarouselImageModal = ({ isOpen, onClose, onSubmit, image, mode }) => {
               {option.name}
             </Box>
           )}
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Product" margin="normal" />
-          )}
+          renderInput={(params) => <TextField {...params} placeholder="Product" margin="normal" />}
         />
         <Box mt={2} display="flex" alignItems="center">
           <Button variant="contained" component="label" sx={{ mt: 2 }} style={{ color: "white" }}>
             Upload Image
-            <input
-              type="file"
-              hidden
-              onChange={handleImageChange}
-            />
+            <input type="file" hidden onChange={handleImageChange} />
           </Button>
           {imageUrl && (
             <Box ml={2} display="flex" alignItems="center">
@@ -197,7 +191,12 @@ const CarouselImageModal = ({ isOpen, onClose, onSubmit, image, mode }) => {
           <Button variant="outlined" onClick={onClose} style={{ color: "black" }}>
             Cancel
           </Button>
-          <Button variant="contained" color="primary" onClick={handleFormSubmit} style={{ color: "white" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleFormSubmit}
+            style={{ color: "white" }}
+          >
             {mode === "edit" ? "Save Changes" : "Add Image"}
           </Button>
         </Box>

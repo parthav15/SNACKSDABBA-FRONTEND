@@ -8,7 +8,7 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [formData, setFormData] = useState({
+  const [registerFormData, setRegisterFormData] = useState({
     first_name: "",
     last_name: "",
     email: "",
@@ -16,9 +16,14 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
     password: "",
   });
 
+  const [loginFormData, setLoginFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const debounceTimeout = useRef(null);
 
-  const handleChange = (e) => {
+  const handleRegisterChange = (e) => {
     const { name, value } = e.target;
 
     // Clear previous timeout
@@ -28,19 +33,47 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
 
     // Update value immediately for typing feedback
 
-    setFormData((prevData) => ({
+    setRegisterFormData((registerPrevData) => ({
+      ...registerPrevData,
+      [name]: value,
+    }));
+
+    // Set debounced update for final formData
+    debounceTimeout.current = setTimeout(() => {
+      setRegisterFormData((registerPrevData) => ({
+        ...registerPrevData,
+        [name]: value,
+      }));
+      console.log("Updated Form Data:", {
+        ...registerFormData,
+        [name]: value,
+      });
+    }, 3000);
+  };
+
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+
+    // Clear previous timeout
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    // Update value immediately for typing feedback
+
+    setLoginFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
 
     // Set debounced update for final formData
     debounceTimeout.current = setTimeout(() => {
-      setFormData((prevData) => ({
-        ...prevData,
+      setLoginFormData((loginPrevData) => ({
+        ...loginPrevData,
         [name]: value,
       }));
       console.log("Updated Form Data:", {
-        ...formData,
+        ...loginFormData,
         [name]: value,
       });
     }, 3000);
@@ -58,11 +91,11 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.email,
-          phone_number: formData.phone_number,
-          password: formData.password,
+          first_name: registerFormData.first_name,
+          last_name: registerFormData.last_name,
+          email: registerFormData.email,
+          phone_number: registerFormData.phone_number,
+          password: registerFormData.password,
         }),
       });
 
@@ -89,8 +122,61 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
     }
     console.log("Register Successfull");
   };
-  const handleLogin = () => {
-    console.log("Logined");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    // Fixed logical operator - was checking !password instead of password
+    if (!loginFormData.email || !loginFormData.password) {
+      setError("Email and password are required");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/user_login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Added Accept header
+          Accept: "application/json",
+        },
+        // Added credentials for cookie handling
+        credentials: "include",
+        body: JSON.stringify({
+          email: loginFormData.email,
+          password: loginFormData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      // Check for errors before proceeding
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Login failed. Please try again.");
+      }
+
+      // Store user data
+      const userData = {
+        firstName: data.first_name,
+        email: data.email,
+        // Add any other relevant user data
+      };
+
+      localStorage.setItem("userToken", data.token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Added redirect or success callback
+      // onLoginSuccess?.(userData);
+      console.log("Login successfully");
+      onClose?.();
+    } catch (error) {
+      setError(error.message || "An unexpected error occurred");
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
     setIsRightPanelActive(initialPannel === "signUp");
@@ -140,42 +226,42 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
                   type="text"
                   name="first_name"
                   placeholder="First Name"
-                  value={formData.first_name}
-                  onChange={handleChange}
+                  value={registerFormData.first_name}
+                  onChange={handleRegisterChange}
                   className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
                 <input
                   type="text"
                   name="last_name"
-                  value={formData.last_name}
+                  value={registerFormData.last_name}
                   placeholder="Last Name"
-                  onChange={handleChange}
+                  onChange={handleRegisterChange}
                   className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
                 />
               </div>
               <input
                 type="text"
                 name="phone_number"
-                value={formData.phone_number}
+                value={registerFormData.phone_number}
                 placeholder="Phone Number"
-                onChange={handleChange}
+                onChange={handleRegisterChange}
                 className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
               />
 
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                value={registerFormData.email}
                 placeholder="Email"
-                onChange={handleChange}
+                onChange={handleRegisterChange}
                 className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
               />
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
+                value={registerFormData.password}
+                onChange={handleRegisterChange}
                 className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
               />
             </div>
@@ -206,14 +292,22 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
                 </span>
               </button>
             </div>
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
             <input
               type="email"
+              name="email"
+              value={loginFormData.email}
               placeholder="Email"
+              onChange={handleLoginChange}
               className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
             />
             <input
               type="password"
+              name="password"
+              value={loginFormData.password}
               placeholder="Password"
+              onChange={handleLoginChange}
               className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
             />
             <a
@@ -224,9 +318,12 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
             </a>
             <button
               type="submit"
-              className="bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-cyan-600"
+              disabled={isLoading}
+              className={`bg-cyan-500 text-white rounded-full px-12 py-3 uppercase text-sm font-bold tracking-wider transition-all duration-300 ease-in-out ${
+                isLoading ? "opacity-50 cursor-not-allowed" : "hover:scale-95 hover:bg-cyan-600"
+              }`}
             >
-              Login
+              {isLoading ? "Loading..." : "Login"}
             </button>
           </form>
         </div>

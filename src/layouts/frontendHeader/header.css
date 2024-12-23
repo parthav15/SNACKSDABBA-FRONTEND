@@ -1,76 +1,209 @@
+/* Basic layout styles for the carousel */
 .carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
   width: 100%;
-  margin: 0 auto;
   overflow: hidden;
 }
 
 .carousel-content {
   display: flex;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .carousel-slide {
   min-width: 100%;
-  flex-shrink: 0;
+  box-sizing: border-box;
+  opacity: 0; /* Initially, slides are invisible */
+  transform: scale(0.95); /* Slightly scaled down initially */
+  animation: popUp 0.9s forwards ease-in; /* Trigger pop-up animation */
+}
+
+/* Pop-up animation when a slide enters */
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.9); /* Starts smaller */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* Ends in normal size */
+  }
 }
 
 .carousel-image {
   width: 100%;
-  height: 700px;
-  border-radius: 8px;
-  object-fit: fill;
+
+  height: auto;
+  object-fit: cover;
 }
 
-.carousel-dots {
-  display: flex;
-  justify-content: center;
+.carousel-content-inner {
   position: absolute;
-  bottom: 15px;
-  width: 100%;
+  top: 20px;
+  left: 20px;
+  color: #fff;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  height: auto;
+  min-width: 350px;
+  text-align: center;
 }
 
-button.dot {
-  background-color: rgba(255, 255, 255, 0.5);
+.carousel-content-inner .author {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.carousel-content-inner .title {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.carousel-content-inner .topic {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.carousel-content-inner .description {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.carousel-content-inner .buttons {
+  margin-top: 15px;
+}
+
+.carousel-content-inner .buttons button {
+  background-color: #01c6c9;
   border: none;
-  height: 12px;
-  width: 12px;
-  margin: 0 5px;
-  border-radius: 50%;
+  padding: 10px 15px;
+  margin-right: 10px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-button.dot.active {
-  background-color: rgba(255, 255, 255, 0.9);
+.carousel-content-inner .buttons button:hover {
+  background-color: rgb(0, 171, 171);
+  color: #fff;
 }
 
-.arrow {
-  width: 20px;
-  filter: invert(40%);
-}
-
-button.btn {
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 24px;
+/* Arrow buttons */
+.btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  background: transparent;
+  border: none;
   cursor: pointer;
-  z-index: 10;
-  border-radius: 50%;
+  z-index: 1;
 }
 
-button.prev {
+.prev {
   left: 10px;
 }
 
-button.next {
+.next {
   right: 10px;
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* Dot indicators */
+.carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Thumbnail container at the bottom of carousel (Outside of the carousel container) */
+.carousel-thumbnails {
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 2;
+  margin-top: -12rem;
+}
+
+.thumbnail {
+  width: 300px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 4px solid rgb(255, 255, 255);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.thumbnail:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+  border: 3px solid #ffffff; /* Highlight border on hover */
+}
+
+/* Animation classes for next and previous slide transitions */
+/* .carousel.next .carousel-content {
+  animation: slideNext 3s cubic-bezier(0.25, 0.8, 0.25); 
+}
+
+.carousel.prev .carousel-content {
+  animation: slidePrev 3s cubic-bezier(0.25, 0.8, 0.25); 
+} */
+
+/* Improve slide animation */
+@keyframes slideNext {
+  0% {
+    opacity: 0.5;
+    transform: translateX(100%);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(-10%); /* Bounce-back effect */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0); /* Final position */
+  }
+}
+
+@keyframes slidePrev {
+  0% {
+    opacity: 0.5;
+    transform: translateX(-100%);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(10%); /* Bounce-back effect */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0); /* Final position */
+  }
 }

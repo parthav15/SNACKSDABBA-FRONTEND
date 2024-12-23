@@ -1,28 +1,27 @@
 .carousel-card {
-    position: relative;
-  }
-  
-  .carousel-card-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-  }
-  
-  .hover-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease;
-  }
-  
-  .carousel-card:hover .hover-overlay {
-    opacity: 1;
-  }
-  
+  position: relative;
+}
+
+.carousel-card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.carousel-card:hover .hover-overlay {
+  opacity: 1;
+}
