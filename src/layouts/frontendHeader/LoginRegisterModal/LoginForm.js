@@ -1,10 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useFormHandling } from "./hooks/useFormHandling";
 import { BASE_URL } from "config";
 import PropTypes from "prop-types";
 
+const GetUserDetails = async (setUserDetails) => {
+  try {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      console.log("No token found");
+      return;
+    }
+
+    const response = await fetch(`${BASE_URL}/api/user_get_details/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || data.error || "Can't get user details");
+    }
+    localStorage.setItem(
+      "userDetails",
+      JSON.stringify({
+        firstName: data.user_details.first_name,
+        email: data.user_details.email,
+      })
+    );
+    setUserDetails({ firstName: data.user_details.first_name, email: data.user_details.email });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const LoginForm = ({ onClose, isRightPanelActive }) => {
+  const [userDetails, setUserDetails] = useState(null);
   const {
     formData: loginFormData,
     isLoading,
@@ -44,10 +77,6 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
       if (!response.ok) {
         throw new Error(data.error || data.message || "Login failed");
       }
-      console.log("User Data: ", {
-        firstName: data.first_name,
-        email: data.email,
-      });
 
       localStorage.setItem("userToken", data.token);
       localStorage.setItem(
@@ -57,8 +86,8 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
           email: data.email,
         })
       );
-      // Add this after localStorage.setItem
-      console.log("Stored User Data:", JSON.parse(localStorage.getItem("user")));
+
+      GetUserDetails(setUserDetails);
 
       onClose?.();
     } catch (error) {
