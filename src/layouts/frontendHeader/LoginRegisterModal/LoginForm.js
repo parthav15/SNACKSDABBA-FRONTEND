@@ -23,14 +23,8 @@ const GetUserDetails = async (setUserDetails) => {
     if (!response.ok) {
       throw new Error(data.message || data.error || "Can't get user details");
     }
-    localStorage.setItem(
-      "userDetails",
-      JSON.stringify({
-        firstName: data.user_details.first_name,
-        email: data.user_details.email,
-      })
-    );
-    setUserDetails({ firstName: data.user_details.first_name, email: data.user_details.email });
+    localStorage.setItem("userDetails", JSON.stringify(data.user_details));
+    setUserDetails(data.user_details);
   } catch (err) {
     console.log(err);
   }
