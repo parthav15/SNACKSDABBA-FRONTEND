@@ -1,4 +1,4 @@
-import LoginRegisterModal from "./LoginRegisterModalContent";
+import LoginRegisterModal from "./index.js";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
