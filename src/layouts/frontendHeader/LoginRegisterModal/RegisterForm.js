@@ -27,7 +27,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
     setError(null);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user_register/`, {
+      const response = await fetch(`${BASE_URL}api/user_register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

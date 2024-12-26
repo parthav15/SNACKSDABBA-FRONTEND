@@ -12,7 +12,7 @@ const GetUserDetails = async (setUserDetails) => {
       return;
     }
 
-    const response = await fetch(`${BASE_URL}/api/user_get_details/`, {
+    const response = await fetch(`${BASE_URL}api/user_get_details/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user_login/`, {
+      const response = await fetch(`${BASE_URL}api/user_login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
