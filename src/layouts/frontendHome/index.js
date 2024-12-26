@@ -2,10 +2,11 @@ import React from "react";
 import Navbar from "layouts/frontendHeader/Navbar/navbar.js";
 import Header from "layouts/frontendHeader/index.js";
 import FeaturesCard from "layouts/frontendFeaturesCard";
+import "../../tailwind-css/input.css";
 
 const FrontendHome = () => {
   return (
-    <div>
+    <div className="font-poppins">
       <Navbar />
       {/* <Carousel /> */}
       <Header

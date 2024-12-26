@@ -101,7 +101,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex bg-teal-600 px-2 py-2 text-white">
+      <div className="flex bg-gradient-to-r from-cyan-600 to-teal-500 px-2 py-2 text-white">
         <div className="flex gap-3 ml-4 mt-1">
           <FaFacebook />
           <FaInstagram />

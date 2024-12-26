@@ -8,8 +8,7 @@ module.exports = {
         primary: "#0d9488",
       },
       fontFamily: {
-        primary: ["Roboto", "sans"],
-        secondary: ["Kanit", "sans"],
+        poppins: ["Poppins", "sans-serif"], // Add Poppins here
       },
     },
   },
