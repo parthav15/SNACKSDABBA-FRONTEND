@@ -82,6 +82,7 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
       );
 
       GetUserDetails(setUserDetails);
+      window.location.reload();
 
       onClose?.();
     } catch (error) {

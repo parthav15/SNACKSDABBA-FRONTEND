@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import "../../../tailwind-css/input.css";
 import "./navbar.css";
 import { LoginModal, RegisterModal } from "../LoginRegisterModal/LoginRegisterModal.js";
-import LoginRegisterModalContent from "../LoginRegisterModal/index.js";
+import UserAccountModal from "../LoginRegisterModal/UserAccountModal.js";
 
 const Navbar = () => {
   const AnimatedText = () => {
@@ -190,9 +190,7 @@ const Navbar = () => {
               </div>
             </div>
             <div className="mt-2">
-              <button className="text-primary text-xl hover:text-secondary transition duration-300 ease-in-out">
-                <FaUserCircle className="size-10" />
-              </button>
+              <UserAccountModal />
             </div>
             <div className="text-sm font-semibold -mx-5">
               <div>

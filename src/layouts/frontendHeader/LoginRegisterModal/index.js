@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import OverlayPanel from "./OverlayPanel";
 
-const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
+const LoginRegisterModalContent = ({ onClose, initialPannel, onLoginSuccess }) => {
   const [isRightPanelActive, setIsRightPanelActive] = useState(initialPannel === "signUp");
 
   useEffect(() => {
@@ -28,7 +28,11 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
         }`}
       >
         <RegisterForm onClose={onClose} isRightPanelActive={isRightPanelActive} />
-        <LoginForm onClose={onClose} isRightPanelActive={isRightPanelActive} />
+        <LoginForm
+          onClose={onClose}
+          isRightPanelActive={isRightPanelActive}
+          onLoginSuccess={onLoginSuccess}
+        />
         <OverlayPanel
           isRightPanelActive={isRightPanelActive}
           setIsRightPanelActive={setIsRightPanelActive}
@@ -41,6 +45,7 @@ const LoginRegisterModalContent = ({ onClose, initialPannel }) => {
 LoginRegisterModalContent.propTypes = {
   onClose: PropTypes.func.isRequired,
   initialPannel: PropTypes.oneOf(["signIn", "signUp"]).isRequired,
+  onLoginSuccess: PropTypes.func.isRequired,
 };
 
 export default LoginRegisterModalContent;
