@@ -39,6 +39,7 @@ const ModalTrigger = ({ type }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("userDetails");
+    localStorage.remov
     setUserName(null);
   };
   return (

@@ -73,16 +73,11 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
       }
 
       localStorage.setItem("userToken", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          firstName: data.first_name,
-          email: data.email,
-        })
-      );
 
       GetUserDetails(setUserDetails);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
 
       onClose?.();
     } catch (error) {

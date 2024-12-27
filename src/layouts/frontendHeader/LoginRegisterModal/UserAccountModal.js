@@ -60,11 +60,11 @@ UserModal.propTypes = {
 
 const UserAccountModal = () => {
   const [showModal, setShowModal] = useState(false);
-
   const handleLogout = () => {
     localStorage.removeItem("userDetails");
-    setShowModal(false); // Close the modal
-    window.location.reload(); // Refresh the page to reflect logged-out state
+    localStorage.removeItem("userToken");
+    setShowModal(false);
+    window.location.reload();
   };
 
   return (
