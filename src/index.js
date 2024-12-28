@@ -4,12 +4,16 @@ import { BrowserRouter } from "react-router-dom";
 import App from "App";
 
 import { SoftUIControllerProvider } from "context";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </SoftUIControllerProvider>
   </BrowserRouter>
 );

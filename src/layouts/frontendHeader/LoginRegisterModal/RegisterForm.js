@@ -2,18 +2,15 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useFormHandling } from "./hooks/useFormHandling";
 import { BASE_URL } from "config";
-import { NewReleases } from "@mui/icons-material";
 import PropTypes from "prop-types";
+import { setUser, setLoading, setError } from "../../../redux/slices/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const RegisterForm = ({ onClose, isRightPanelActive }) => {
-  const {
-    formData: registerFormData,
-    isLoading,
-    setIsLoading,
-    error,
-    setError,
-    handleChange,
-  } = useFormHandling({
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector((state) => state.user);
+
+  const [formData, setFormData] = React.useState({
     first_name: "",
     last_name: "",
     email: "",
@@ -21,10 +18,14 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
     password: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    dispatch(setLoading(true));
+    dispatch(setError(null));
 
     try {
       const response = await fetch(`${BASE_URL}api/user_register/`, {
@@ -32,7 +33,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(registerFormData),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -40,20 +41,21 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
         throw new Error(data.message || "Registration Failed");
       }
       console.log("Complete Api response for registration", data);
-      localStorage.setItem("userToken", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          first_name: data.first_name,
-          email: data.email,
+      dispatch(
+        setUser({
+          user: {
+            first_name: data.first_name,
+            email: data.email,
+          },
+          token: data.token,
         })
       );
       onClose?.();
     } catch (error) {
-      setError(error.message || "Registration failed");
+      dispatch(setError(error.message || "Registration failed"));
       console.log("Register error", error);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -80,14 +82,14 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
               type="text"
               name="first_name"
               placeholder="First Name"
-              value={registerFormData.first_name}
+              value={formData.first_name}
               onChange={handleChange}
               className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
             />
             <input
               type="text"
               name="last_name"
-              value={registerFormData.last_name}
+              value={formData.last_name}
               placeholder="Last Name"
               onChange={handleChange}
               className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
@@ -96,7 +98,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
           <input
             type="text"
             name="phone_number"
-            value={registerFormData.phone_number}
+            value={formData.phone_number}
             placeholder="Phone Number"
             onChange={handleChange}
             className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
@@ -104,7 +106,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
           <input
             type="email"
             name="email"
-            value={registerFormData.email}
+            value={formData.email}
             placeholder="Email"
             onChange={handleChange}
             className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
@@ -113,7 +115,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
             type="password"
             name="password"
             placeholder="Password"
-            value={registerFormData.password}
+            value={formData.password}
             onChange={handleChange}
             className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
           />
