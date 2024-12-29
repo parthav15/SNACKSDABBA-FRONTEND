@@ -69,12 +69,13 @@ function Products() {
 
   const handleModalSubmit = (formData) => {
     const token = localStorage.getItem("token");
-    const url =
-      modalMode === "add"
-        ? `${BASE_URL}admin_panel/add_product/`
-        : `${BASE_URL}admin_panel/update_product/${currentProduct.id}/`;
+    const url = `${BASE_URL}admin_panel/${modalMode === "add" ? "add_product" : "update_product"}/`;
 
-    const method = modalMode === "add" ? "POST" : "PUT";
+    const method = "POST";
+
+    if (modalMode === "edit") {
+      formData.append("product_id", currentProduct.id);
+    }
 
     fetch(url, {
       method,
