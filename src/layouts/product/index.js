@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import Icon from "@mui/material/Icon";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Dialog from "@mui/material/Dialog";
@@ -21,7 +22,7 @@ import "./product.css";
 import { BASE_URL } from "config";
 
 function Products() {
-  const columns = ["S.No.", "Product Name", "Category", "Price", "Stock", "Actions"];
+  const columns = ["S.No.", "Product Name", "Category", "Price", "Stock", "Featured", "Actions"];
   const [rows, setRows] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -156,6 +157,13 @@ function Products() {
                       <td>{row.category__name}</td>
                       <td>{row.price}</td>
                       <td>{row.stock}</td>
+                      <td>
+                        {row.is_featured ? (
+                          <Icon sx={{ color: "green", fontSize: "24px !important" }}>check_circle</Icon>
+                        ) : (
+                          <Icon sx={{ color: "red", fontSize: "24px !important" }}>cancel</Icon>
+                        )}
+                      </td>
                       <td>
                         <IconButton
                           color="secondary"
