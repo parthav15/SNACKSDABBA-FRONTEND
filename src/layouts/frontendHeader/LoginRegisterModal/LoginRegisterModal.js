@@ -31,17 +31,11 @@ const ModalTrigger = ({ type }) => {
   const initialPannel = type === "login" ? "signIn" : "signUp";
 
   const handleClick = () => {
-
     if (!userName) {
       setShowModal(true);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userDetails");
-    localStorage.remov
-    setUserName(null);
-  };
   return (
     <div className="show-modal">
       <button onClick={handleClick} disabled={!!userName}>

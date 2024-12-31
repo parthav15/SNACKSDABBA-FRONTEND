@@ -1,9 +1,8 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
-import { useFormHandling } from "./hooks/useFormHandling";
 import { BASE_URL } from "config";
 import PropTypes from "prop-types";
-import { setUser, setLoading, setError } from "../../../redux/slices/userSlice.js";
+import { setUserDetails, setLoading, setError } from "../../../redux/slices/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const RegisterForm = ({ onClose, isRightPanelActive }) => {
@@ -42,7 +41,7 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
       }
       console.log("Complete Api response for registration", data);
       dispatch(
-        setUser({
+        setUserDetails({
           user: {
             first_name: data.first_name,
             email: data.email,
