@@ -39,6 +39,43 @@
 .wrapper .container .top {
   height: 80%;
   width: 100%;
+  position: relative;
+}
+
+.wrapper .container .top img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 8px;
+  width: 40px; 
+  height: 40px; 
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wishlist i {
+  font-size: 24px;
+  color: #254053;
+}
+
+.wishlist.added {
+  background-color: #f44336;
+}
+
+.wishlist:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
 }
 
 .wrapper .container .bottom {
