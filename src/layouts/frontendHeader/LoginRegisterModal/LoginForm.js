@@ -50,7 +50,7 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
       );
       dispatch(fetchUser());
       setTimeout(() => {
-        window.location.reload();
+        // window.location.reload();
       }, 1000);
       onClose?.();
     } catch (err) {
