@@ -46,7 +46,7 @@ const FeaturesCard = () => {
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
             Why <span className="text-rose-500">Millions</span> of Customers Choose Us?
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 items-center">
             {features.map((feature, index) => (
               <div
                 key={index}
