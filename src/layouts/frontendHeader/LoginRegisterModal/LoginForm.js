@@ -1,90 +1,63 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { useFormHandling } from "./hooks/useFormHandling";
 import { BASE_URL } from "config";
 import PropTypes from "prop-types";
-
-const GetUserDetails = async (setUserDetails) => {
-  try {
-    const token = localStorage.getItem("userToken");
-    if (!token) {
-      console.log("No token found");
-      return;
-    }
-
-    const response = await fetch(`${BASE_URL}api/user_get_details/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || data.error || "Can't get user details");
-    }
-    localStorage.setItem("userDetails", JSON.stringify(data.user_details));
-    setUserDetails(data.user_details);
-  } catch (err) {
-    console.log(err);
-  }
-};
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setUserDetails,
+  setLoading,
+  setError,
+  fetchUser,
+} from "../../../redux/slices/userSlice.js";
 
 const LoginForm = ({ onClose, isRightPanelActive }) => {
-  const [userDetails, setUserDetails] = useState(null);
-  const {
-    formData: loginFormData,
-    isLoading,
-    error,
-    setError,
-    setIsLoading,
-    handleChange,
-  } = useFormHandling({
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector((state) => state.user);
+
+  const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    if (!loginFormData.email || !loginFormData.password) {
-      setError("Email and password are required");
-      setIsLoading(false);
-      return;
-    }
+    dispatch(setLoading(true));
+    dispatch(setError(null));
 
     try {
       const response = await fetch(`${BASE_URL}api/user_login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
-        credentials: "include",
-        body: JSON.stringify(loginFormData),
+        body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-      console.log("Complete Api Response", data);
       if (!response.ok) {
-        throw new Error(data.error || data.message || "Login failed");
+        throw new Error(data.message || "Login Failed");
       }
-
+      // console.log("Compleclearte Api response for login User: ", data);
       localStorage.setItem("userToken", data.token);
 
-      GetUserDetails(setUserDetails);
+      dispatch(
+        setUserDetails({
+          user: data,
+        })
+      );
+      dispatch(fetchUser());
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
-
+      }, 1000);
       onClose?.();
-    } catch (error) {
-      setError(error.message || "An unexpected error occured");
-      console.log("Login error: ", error);
+    } catch (err) {
+      dispatch(setError(error.message || "Login Failed"));
+      console.log("Login Error", error);
     } finally {
-      setIsLoading(false);
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -107,7 +80,7 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
         <input
           type="email"
           name="email"
-          value={loginFormData.email}
+          value={formData.email}
           placeholder="Email"
           onChange={handleChange}
           className="bg-gray-100 border-none px-4 py-3 mb-2 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"
@@ -115,7 +88,7 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
         <input
           type="password"
           name="password"
-          value={loginFormData.password}
+          value={formData.password}
           placeholder="Password"
           onChange={handleChange}
           className="bg-gray-100 border-none px-4 py-3 mb-4 w-full rounded transition-all duration-300 focus:ring-2 focus:ring-cyan-500 outline-none"

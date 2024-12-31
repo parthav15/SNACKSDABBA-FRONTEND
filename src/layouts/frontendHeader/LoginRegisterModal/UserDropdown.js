@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineLiveHelp } from "react-icons/md";
+import { logout } from "../../../redux/slices/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const getUserDetails = () => {
   const user = JSON.parse(localStorage.getItem("userDetails"));
@@ -9,6 +11,13 @@ const getUserDetails = () => {
 };
 
 const UserDropdown = () => {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Get authentication status
+
+  // Log the current state of the user, token, and authentication status
+
+  console.log("Is Authenticated:", isAuthenticated);
+
+  const dispatch = useDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const user = getUserDetails();
@@ -32,6 +41,8 @@ const UserDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userDetails");
+    localStorage.removeItem("userToken");
+    dispatch(logout());
     setIsDropdownOpen(false);
     window.location.reload(); // Refresh to reflect logged-out state
   };
