@@ -85,9 +85,13 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
       setStock(product.stock || "");
 
       const selectedCategory = categories.find(
-        (cat) => cat.id === product.category_id
+        (cat) => cat.name === product?.category__name
       );
-      setCategory(selectedCategory || null);
+      if (selectedCategory) {
+        setCategory(selectedCategory);
+      } else {
+        console.warn("No category found with name:", product.category_name);
+      }
 
       const existingImages = product.image.map(
         (img) => `${BASE_URL}/media/${img}`

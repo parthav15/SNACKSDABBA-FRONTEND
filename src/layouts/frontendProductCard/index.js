@@ -110,14 +110,14 @@ const ProductCard = () => {
 
       try {
         const response = await fetch(`${BASE_URL}api/get_cart_items/`, {
-          method: "GET",
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         const data = await response.json();
         if (data.success) {
-          const cartItems = data.cart.reduce((acc, item) => {
+          const cartItems = data.items.reduce((acc, item) => {
             acc[item.product_id] = true;
             return acc;
           }, {});

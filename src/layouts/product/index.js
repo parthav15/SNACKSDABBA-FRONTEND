@@ -22,7 +22,7 @@ import "./product.css";
 import { BASE_URL } from "config";
 
 function Products() {
-  const columns = ["S.No.", "Product Name", "Category", "Price", "Stock", "Featured", "Actions"];
+  const columns = ["S.No.", "Product Name", "Category", "Brand", "Price", "Stock", "Featured", "Actions"];
   const [rows, setRows] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -155,6 +155,7 @@ function Products() {
                       <td>{index + 1}</td>
                       <td>{row.name}</td>
                       <td>{row.category__name}</td>
+                      <td>{row.brand}</td>
                       <td>{row.price}</td>
                       <td>{row.stock}</td>
                       <td>

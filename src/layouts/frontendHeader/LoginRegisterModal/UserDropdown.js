@@ -4,6 +4,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineLiveHelp } from "react-icons/md";
 import { logout } from "../../../redux/slices/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "config.js";
 
 const getUserDetails = () => {
   const user = JSON.parse(localStorage.getItem("userDetails"));
@@ -54,7 +55,12 @@ const UserDropdown = () => {
         onClick={toggleDropdown}
         className="text-primary text-xl hover:text-secondary transition duration-300 ease-in-out"
       >
-        <FaUserCircle className="size-10" />
+        <img
+          className="w-10 h-10 rounded-full object-cover"
+          src={user?.profile_picture ? `${BASE_URL}${user.profile_picture}` : "./favicon.png"}
+          onError={(e) => (e.target.src = "./favicon.png")}
+          alt="User Avatar"
+        />
       </button>
 
       {/* Dropdown Menu */}
@@ -66,7 +72,8 @@ const UserDropdown = () => {
               <div className="flex items-center gap-4 p-4 border-b border-gray-200">
                 <img
                   className="w-12 h-12 rounded-full object-cover"
-                  src="./favicon.png"
+                  src={user?.profile_picture ? `${BASE_URL}media/${user.profile_picture}` : "./favicon.png"}
+                  onError={(e) => (e.target.src = "./favicon.png")}
                   alt="User Avatar"
                 />
                 <div>
