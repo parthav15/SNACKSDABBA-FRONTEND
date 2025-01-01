@@ -5,6 +5,7 @@ import "../../../tailwind-css/input.css";
 import "./navbar.css";
 import { LoginModal, RegisterModal } from "../LoginRegisterModal/LoginRegisterModal.js";
 import UserDropdown from "../LoginRegisterModal/UserDropdown.js";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const AnimatedText = () => {
@@ -29,6 +30,7 @@ const Navbar = () => {
   };
 
   const [category, setCategory] = useState("all");
+  const user = useSelector((state) => state.user.user);
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
@@ -194,8 +196,14 @@ const Navbar = () => {
             </div>
             <div className="text-sm font-semibold -mx-5">
               <div>
-                <LoginModal />
-                <RegisterModal />
+                {user ? (
+                  <LoginModal />
+                ) : (
+                  <>
+                    <LoginModal />
+                    <RegisterModal />
+                  </>
+                )}
               </div>
             </div>
           </div>
