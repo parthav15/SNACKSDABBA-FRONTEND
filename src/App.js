@@ -17,6 +17,9 @@ import brand from "assets/images/logo-ct.png";
 import { FaBox, FaTags } from 'react-icons/fa';
 import SignIn from "layouts/authentication/sign-in";
 
+import { fetchUser } from "./redux/slices/userSlice.js";
+import { useDispatch } from "react-redux";
+
 const token = localStorage.getItem("token");
 
 export default function App() {
@@ -25,6 +28,14 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+
+  const myDispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      myDispatch(fetchUser());
+    }
+  }, [dispatch]);
 
   useMemo(() => {
     const cacheRtl = createCache({

@@ -6,22 +6,12 @@ import { logout } from "../../../redux/slices/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "config.js";
 
-const getUserDetails = () => {
-  const user = JSON.parse(localStorage.getItem("userDetails"));
-  return user;
-};
-
 const UserDropdown = () => {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Get authentication status
-
-  // Log the current state of the user, token, and authentication status
-
-  console.log("Is Authenticated:", isAuthenticated);
-
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const user = getUserDetails();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -41,11 +31,9 @@ const UserDropdown = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("userDetails");
-    localStorage.removeItem("userToken");
     dispatch(logout());
     setIsDropdownOpen(false);
-    window.location.reload(); // Refresh to reflect logged-out state
+    window.location.reload();
   };
 
   return (
@@ -64,7 +52,7 @@ const UserDropdown = () => {
       </button>
 
       {/* Dropdown Menu */}
-      {isDropdownOpen && (
+      {isDropdownOpen && user && (
         <div className="absolute right-0 w-64 text-wrap bg-white shadow-lg rounded-lg border border-gray-200 z-20">
           {user ? (
             <>
@@ -72,7 +60,7 @@ const UserDropdown = () => {
               <div className="flex items-center gap-4 p-4 border-b border-gray-200">
                 <img
                   className="w-12 h-12 rounded-full object-cover"
-                  src={user?.profile_picture ? `${BASE_URL}media/${user.profile_picture}` : "./favicon.png"}
+                  src={user?.profile_picture ? `${BASE_URL}${user.profile_picture}` : "./favicon.png"}
                   onError={(e) => (e.target.src = "./favicon.png")}
                   alt="User Avatar"
                 />
@@ -100,10 +88,10 @@ const UserDropdown = () => {
               </div>
 
               {/* Logout Button */}
-              <div className=" border-t border-gray-200">
+              <div className="border-t border-gray-200">
                 <button
                   onClick={handleLogout}
-                  className="w-full px-4 py-2  hover:border-red-500 border-2 text-red-500 font-semibold rounded-md hover:bg-red-600 hover:text-white transition-colors duration-300 ease-in-out"
+                  className="w-full px-4 py-2 hover:border-red-500 border-2 text-red-500 font-semibold rounded-md hover:bg-red-600 hover:text-white transition-colors duration-300 ease-in-out"
                 >
                   Logout
                 </button>

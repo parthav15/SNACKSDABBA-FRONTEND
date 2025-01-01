@@ -3,12 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { BASE_URL } from "config";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setUserDetails,
-  setLoading,
-  setError,
-  fetchUser,
-} from "../../../redux/slices/userSlice.js";
+import { fetchUser } from "../../../redux/slices/userSlice.js";
 
 const LoginForm = ({ onClose, isRightPanelActive }) => {
   const dispatch = useDispatch();
@@ -23,10 +18,9 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(setLoading(true));
-    dispatch(setError(null));
 
     try {
       const response = await fetch(`${BASE_URL}api/user_login/`, {
@@ -37,29 +31,24 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
+
       if (!response.ok) {
         throw new Error(data.message || "Login Failed");
       }
-      // console.log("Compleclearte Api response for login User: ", data);
+
       localStorage.setItem("userToken", data.token);
 
-      dispatch(
-        setUserDetails({
-          user: data,
-        })
-      );
       dispatch(fetchUser());
-      setTimeout(() => {
-        // window.location.reload();
-      }, 1000);
       onClose?.();
     } catch (err) {
-      dispatch(setError(error.message || "Login Failed"));
-      console.log("Login Error", error);
     } finally {
-      dispatch(setLoading(false));
     }
   };
+
+  const handleGoogleLogin = () => {
+    console.log("Clicked Google Login");
+  };
+
   return (
     <div
       className={`absolute top-0 h-full transition-transform duration-700 ease-in-out left-0 w-1/2 z-20 ${
@@ -72,7 +61,10 @@ const LoginForm = ({ onClose, isRightPanelActive }) => {
       >
         <h1 className="text-2xl font-bold mb-4">Sign In To Your Account</h1>
         <div className="flex justify-center space-x-4 my-5">
-          <button className="flex align-middle gap-1 text-cyan-500 border border-cyan-500 rounded-full -mt-4 px-4 py-2 text-l font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-black hover:bg-opacity-5">
+          <button
+            onClick={handleGoogleLogin}
+            className="flex align-middle gap-1 text-cyan-500 border border-cyan-500 rounded-full -mt-4 px-4 py-2 text-l font-bold tracking-wider transition-all duration-300 ease-in-out hover:scale-95 hover:bg-black hover:bg-opacity-5"
+          >
             Login With <FcGoogle className="size-8" />
           </button>
         </div>

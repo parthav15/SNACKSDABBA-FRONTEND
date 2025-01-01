@@ -2,8 +2,8 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BASE_URL } from "config";
 import PropTypes from "prop-types";
-import { setUserDetails, setLoading, setError } from "../../../redux/slices/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../../../redux/slices/userSlice.js";
 
 const RegisterForm = ({ onClose, isRightPanelActive }) => {
   const dispatch = useDispatch();
@@ -21,10 +21,10 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    dispatch(setLoading(true));
-    dispatch(setError(null));
+    dispatch(fetchUser());
 
     try {
       const response = await fetch(`${BASE_URL}api/user_register/`, {
@@ -39,24 +39,18 @@ const RegisterForm = ({ onClose, isRightPanelActive }) => {
       if (!response.ok) {
         throw new Error(data.message || "Registration Failed");
       }
+
       console.log("Complete Api response for registration", data);
-      dispatch(
-        setUserDetails({
-          user: {
-            first_name: data.first_name,
-            email: data.email,
-          },
-          token: data.token,
-        })
-      );
+      localStorage.setItem("userToken", data.token);
+
+      dispatch(fetchUser());
+
       onClose?.();
     } catch (error) {
-      dispatch(setError(error.message || "Registration failed"));
       console.log("Register error", error);
-    } finally {
-      dispatch(setLoading(false));
     }
   };
+
   return (
     <div
       className={`absolute top-0 h-full transition-all duration-700 ease-in-out left-0 w-1/2 ${
@@ -139,3 +133,4 @@ RegisterForm.propTypes = {
 };
 
 export default RegisterForm;
+
