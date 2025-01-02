@@ -5,18 +5,43 @@ import Footer from "layouts/frontendFooter";
 import FeaturesCard from "layouts/frontendFeaturesCard";
 import "../../tailwind-css/input.css";
 import ProductCard from "layouts/frontendProductCard";
+import { BASE_URL } from "config";
+
+const fetchFeaturedProducts = async () => {
+  const response = await fetch(`${BASE_URL}api/get_products_by_featured/`, {
+    method: "POST"
+  });
+  const data = await response.json();
+  return data.success ? data.products : [];
+};
+
+const fetchLatestProducts = async () => {
+  const response = await fetch(`${BASE_URL}api/get_products_by_latest/`, {
+    method: "POST"
+  });
+  const data = await response.json();
+  return data.success ? data.products: [];
+}
 
 const FrontendHome = () => {
   return (
     <div className="font-poppins">
       <Navbar />
-      {/* <Carousel /> */}
       <Header
-        autoSlide={true} // Set to true to enable auto-sliding
-        slideInterval={5000} // Set the slide interval (in milliseconds)
+        autoSlide={true}
+        slideInterval={5000}
       />
       <FeaturesCard />
-      <ProductCard />
+      <ProductCard
+        fetchProducts={fetchLatestProducts}
+        title="Latest Products"
+        description="Discover the newest additions to our collection."
+      />
+      <ProductCard
+        fetchProducts={fetchFeaturedProducts}
+        title="Featured Products"
+        description="Our most popular products, handpicked by our team."
+      />
       <Footer />
     </div>
   );

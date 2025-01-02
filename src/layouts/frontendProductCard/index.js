@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./product_card.css";
+import PropTypes from "prop-types";
 import { BASE_URL } from "config";
 
-const ProductCard = () => {
+const ProductCard = ({ fetchProducts, title, description }) => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [wishlist, setWishlist] = useState({});
@@ -22,9 +23,7 @@ const ProductCard = () => {
     try {
       const response = await fetch(`${BASE_URL}api/add_item_to_cart/`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const data = await response.json();
@@ -33,11 +32,9 @@ const ProductCard = () => {
         setCart((prevCart) => ({ ...prevCart, [productId]: true }));
         alert(data.message);
       } else {
-        console.error(data.message);
         alert("Failed to add item to cart.");
       }
     } catch (error) {
-      console.error("Error adding item to cart:", error);
       alert("Something went wrong. Please try again later.");
     } finally {
       setLoading((prevLoading) => ({ ...prevLoading, [productId]: false }));
@@ -58,9 +55,7 @@ const ProductCard = () => {
     try {
       const response = await fetch(`${BASE_URL}api/remove_item_from_cart/`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const data = await response.json();
@@ -69,11 +64,9 @@ const ProductCard = () => {
         setCart((prevCart) => ({ ...prevCart, [productId]: false }));
         alert(data.message);
       } else {
-        console.error(data.message);
         alert("Failed to remove item from cart.");
       }
     } catch (error) {
-      console.error("Error removing item from cart:", error);
       alert("Something went wrong. Please try again later.");
     } finally {
       setLoading((prevLoading) => ({ ...prevLoading, [productId]: false }));
@@ -88,60 +81,23 @@ const ProductCard = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}api/get_products_by_featured/`, {
-          method: "POST",
-        });
-        const data = await response.json();
-        if (data.success) {
-          setProducts(data.products);
-        } else {
-          console.error(data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+    const fetchData = async () => {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
     };
 
-    const fetchCartStatus = async () => {
-      const token = localStorage.getItem("userToken");
-      if (!token) return;
-
-      try {
-        const response = await fetch(`${BASE_URL}api/get_cart_items/`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        if (data.success) {
-          const cartItems = data.items.reduce((acc, item) => {
-            acc[item.product_id] = true;
-            return acc;
-          }, {});
-          setCart(cartItems);
-        }
-      } catch (error) {
-        console.error("Error fetching cart status:", error);
-      }
-    };
-
-    fetchProducts();
-    fetchCartStatus();
-  }, []);
+    fetchData();
+  }, [fetchProducts]);
 
   return (
     <>
       <div className="text-center mb-6">
         <h1 className="text-4xl font-bold text-gray-900 inline-block relative">
-          <span className="text-rose-500">Featured</span> Products
+          <span className="text-rose-500">{title.split(" ")[0]}</span>{" "}
+          {title.split(" ").slice(1).join(" ")}
           <span className="absolute left-0 bottom-0 w-full border-b-2 border-rose-500"></span>
         </h1>
-        <p className="text-sm text-gray-600">
-          Our most popular products, handpicked by our team.
-        </p>
+        {description && <p className="text-sm text-gray-600">{description}</p>}
       </div>
       <div className="wrapper">
         {products.map((product) => (
@@ -202,5 +158,10 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+ProductCard.propTypes = {
+  fetchProducts: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+};
 
+export default ProductCard;

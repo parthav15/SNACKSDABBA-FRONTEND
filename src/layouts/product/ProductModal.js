@@ -7,8 +7,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Typography from "@mui/material/Typography";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Editor } from '@tinymce/tinymce-react';
 import { BASE_URL } from "config";
 
 const style = {
@@ -141,6 +140,10 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
     onSubmit(formData);
   };
 
+  const handleEditorChange = (content) => {
+    setDescription(content);
+  };
+
   return (
     <Modal open={isOpen} onClose={onClose} aria-labelledby="product-modal-title">
       <Box sx={style}>
@@ -154,12 +157,20 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, mode }) => {
           onChange={(e) => setName(e.target.value)}
           margin="normal"
         />
-        <ReactQuill
+        <Editor
+          apiKey="b7x1kyuoea6cct1g25lyl4mn6d5w5kmhptf63mo5y4czb08o"
           value={description}
-          onChange={setDescription}
-          placeholder="Write a description..."
-          theme="snow"
-          style={{ height: "150px", width: "100%" }}
+          init={{
+            height: 300,
+            menubar: true,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount',
+            ],
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+          }}
+          onEditorChange={handleEditorChange}
         />
         <TextField
           fullWidth

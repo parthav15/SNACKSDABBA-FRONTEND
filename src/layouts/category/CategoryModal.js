@@ -6,8 +6,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SoftTypography from "components/SoftTypography";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Editor } from '@tinymce/tinymce-react';
 
 import { BASE_URL } from "config";
 
@@ -63,6 +62,10 @@ const CategoryModal = ({ isOpen, onClose, onSubmit, category, mode }) => {
     setImageUrl(URL.createObjectURL(e.target.files[0]));
   };
 
+  const handleEditorChange = (content) => {
+    setDescription(content);
+  };
+
   return (
     <Modal open={isOpen} onClose={onClose} aria-labelledby="modal-modal-title">
       <Box sx={style}>
@@ -76,12 +79,20 @@ const CategoryModal = ({ isOpen, onClose, onSubmit, category, mode }) => {
           onChange={(e) => setName(e.target.value)}
           margin="normal"
         />
-        <ReactQuill
+        <Editor
+          apiKey="b7x1kyuoea6cct1g25lyl4mn6d5w5kmhptf63mo5y4czb08o"
           value={description}
-          onChange={setDescription}
-          placeholder="Write a description..."
-          theme="snow"
-          style={{ height: "150px", width: "100%" }}
+          init={{
+            height: 300,
+            menubar: true,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount',
+            ],
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+          }}
+          onEditorChange={handleEditorChange}
         />
         <Box mt={2} display="flex" alignItems="center">
           <Button variant="contained" component="label" sx={{ mt: 2 }} style={{ color: "white" }}>
