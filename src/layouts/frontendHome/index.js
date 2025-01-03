@@ -6,6 +6,7 @@ import FeaturesCard from "layouts/frontendFeaturesCard";
 import "../../tailwind-css/input.css";
 import ProductCard from "layouts/frontendProductCard";
 import { BASE_URL } from "config";
+import TopCategories from "layouts/frontendTopCategories";
 
 const fetchFeaturedProducts = async () => {
   const response = await fetch(`${BASE_URL}api/get_products_by_featured/`, {
@@ -42,6 +43,7 @@ const FrontendHome = () => {
         title="Featured Products"
         description="Our most popular products, handpicked by our team."
       />
+      <TopCategories />
       <Footer />
     </div>
   );
