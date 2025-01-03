@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart, FaUserCircle, FaInstagram, FaFacebook } from "react-icons/fa";
+import { IoMdSearch } from "react-icons/io";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { FaXTwitter } from "react-icons/fa6";
 import "../../../tailwind-css/input.css";
 import "./navbar.css";
@@ -104,7 +106,7 @@ const Navbar = () => {
   return (
     <>
       <div className="flex bg-gradient-to-r from-cyan-600 to-teal-500 px-2 py-2 text-white">
-        <div className="flex gap-3 ml-4 mt-1">
+        <div className="xl:flex gap-3 ml-4 mt-1 hidden">
           <FaFacebook />
           <FaInstagram />
           <FaXTwitter />
@@ -113,25 +115,22 @@ const Navbar = () => {
           <AnimatedText />
         </div>
       </div>
-      <div
-        className="bg-white shadow-md  p-4  mx-auto px-40 "
-        style={{
-          border: "1px solid #aeaeae",
-          boxShadow: "none",
-          height: "100px",
-          marginTop: "0px",
-        }}
-      >
-        <div
-          className="flex items-center justify-between gap-8 focus-ring-2 focus-bg-secondary"
-          style={{ marginTop: "-0.8rem" }}
-        >
+      <div className="bg-white shadow-md  p-4  mx-auto  border border-gray-300  xl:h-24 h-20 mt-0">
+        <div className="xl:flex xl:-mt-[.8rem] xl:items-center xl:justify-between xl:gap-8 xl:focus-ring-2 xl:focus-bg-secondary flex justify-between">
           {/* Logo */}
+          <span className="xl:hidden">
+            <button
+              id="wishlist"
+              className="text-primary text-xl hover:text-secondary transition-colors duration-300 ease-in-out"
+            >
+              <RxHamburgerMenu className="size-8" />
+            </button>
+          </span>
           <div className="flex-shrink-0">
             <img
               src="./favicon.png"
               alt="Logo"
-              className="w-28 transition-transform duration-300 ease-in-out hover:scale-110"
+              className="xl:w-28 transition-transform duration-300 ease-in-out hover:scale-110 w-16 ml-6"
               style={{ marginTop: "-0.8rem" }}
             />
           </div>
@@ -139,7 +138,7 @@ const Navbar = () => {
           {/* Search Box */}
           <div
             id="search-box"
-            className="flex items-center  w-full max-w-2xl"
+            className="xl:flex items-center  xl:w-full xl:max-w-2xl hidden"
             style={{ marginTop: "-0.8rem" }}
           >
             <select
@@ -166,12 +165,20 @@ const Navbar = () => {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-7" style={{ marginTop: "-0.8rem" }}>
-            <div className="wishlist-container mt-2">
+            <span className="xl:hidden">
               <button
                 id="wishlist"
                 className="text-primary text-xl hover:text-secondary transition-colors duration-300 ease-in-out"
               >
-                <FaHeart className="size-10" />
+                <IoMdSearch className="size-8" />
+              </button>
+            </span>
+            <div className="xl:wishlist-container mt-2 hidden">
+              <button
+                id="wishlist"
+                className="text-primary text-xl hover:text-secondary transition-colors duration-300 ease-in-out "
+              >
+                <FaHeart className="size-8" />
               </button>
               <div id="wishlist-card" className="wishlist-card">
                 Favourite items
@@ -182,7 +189,7 @@ const Navbar = () => {
                 id="shoppingcart"
                 className="relative text-primary text-xl hover:text-secondary transition-colors duration-300 ease-in-out"
               >
-                <FaShoppingCart className="size-10" />
+                <FaShoppingCart className="size-8" />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
                   4
                 </span>
@@ -191,19 +198,21 @@ const Navbar = () => {
                 Shopping Items
               </div>
             </div>
-            <div className="mt-2">
-              <UserDropdown />
-            </div>
-            <div className="text-sm font-semibold -mx-5">
-              <div>
-                {user ? (
-                  <LoginModal />
-                ) : (
-                  <>
+            <div className="hidden xl:flex items-center gap-2 ">
+              <div className="mt-2">
+                <UserDropdown />
+              </div>
+              <div className="text-sm font-semibold -mx-5">
+                <div>
+                  {user ? (
                     <LoginModal />
-                    <RegisterModal />
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <LoginModal />
+                      <RegisterModal />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
