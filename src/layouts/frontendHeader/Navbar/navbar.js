@@ -198,8 +198,8 @@ const Navbar = () => {
                 Shopping Items
               </div>
             </div>
-            <div className="hidden xl:flex items-center gap-2 ">
-              <div className="mt-2">
+            <div className="hidden xl:flex items-center gap-2 mr-4">
+              <div className="mt-2 mr-4">
                 <UserDropdown />
               </div>
               <div className="text-sm font-semibold -mx-5">
