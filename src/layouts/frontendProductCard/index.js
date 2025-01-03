@@ -123,7 +123,7 @@ const ProductCard = ({ fetchProducts, title, description }) => {
               <div className="left">
                 <div className="details">
                   <h1 className="whitespace-nowrap">{product.name}</h1>
-                  <p>Rs. {product.price}</p>
+                  <p style={{ color: "black" }}>Rs. {product.price}</p>
                 </div>
                 <div
                   className="buy"
