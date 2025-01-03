@@ -32,6 +32,13 @@ function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/authentication/sign-in";
+    }
+  })
+
+  useEffect(() => {
     fetchProducts();
   }, []);
 

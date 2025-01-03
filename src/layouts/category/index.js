@@ -31,6 +31,13 @@ function Categories() {
   const [animateTable, setAnimateTable] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/authentication/sign-in";
+    }
+  })
+
+  useEffect(() => {
     fetch(`${BASE_URL}admin_panel/category_list/`, {
       method: "POST",
     })

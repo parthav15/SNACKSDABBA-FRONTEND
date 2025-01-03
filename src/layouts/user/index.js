@@ -37,6 +37,13 @@ function Users() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/authentication/sign-in";
+    }
+  })
+
   const handleViewUser = (userId) => {
     const token = localStorage.getItem("token");
     const formData = new FormData();

@@ -119,6 +119,13 @@ function Orders() {
     setSelectedOrderData(null);
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/authentication/sign-in";
+    }
+  })
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
