@@ -6,11 +6,12 @@ import FeaturesCard from "layouts/frontendFeaturesCard";
 import "../../tailwind-css/input.css";
 import ProductCard from "layouts/frontendProductCard";
 import { BASE_URL } from "config";
+import MobileNavbar from "layouts/frontendHeader/Navbar/MobileNavbar";
 import TopCategories from "layouts/frontendTopCategories";
 
 const fetchFeaturedProducts = async () => {
   const response = await fetch(`${BASE_URL}api/get_products_by_featured/`, {
-    method: "POST"
+    method: "POST",
   });
   const data = await response.json();
   return data.success ? data.products : [];
@@ -18,20 +19,22 @@ const fetchFeaturedProducts = async () => {
 
 const fetchLatestProducts = async () => {
   const response = await fetch(`${BASE_URL}api/get_products_by_latest/`, {
-    method: "POST"
+    method: "POST",
   });
   const data = await response.json();
-  return data.success ? data.products: [];
-}
+  return data.success ? data.products : [];
+};
 
 const FrontendHome = () => {
   return (
     <div className="font-poppins">
-      <Navbar />
-      <Header
-        autoSlide={true}
-        slideInterval={5000}
-      />
+      <div className="block md:hidden">
+        <MobileNavbar />
+      </div>
+      <div className="hidden md:block">
+        <Navbar />
+      </div>
+      <Header autoSlide={true} slideInterval={5000} />
       <FeaturesCard />
       <ProductCard
         fetchProducts={fetchLatestProducts}

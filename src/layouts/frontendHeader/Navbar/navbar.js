@@ -59,37 +59,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    const wishlistButton = document.getElementById("wishlist");
-    const wishlistCard = document.getElementById("wishlist-card");
-    const shoppingButton = document.getElementById("shoppingcart");
-    const shoppingCard = document.getElementById("shoppingcart-card");
-
-    if ((wishlistButton && wishlistCard) || (shoppingButton && shoppingCard)) {
-      wishlistButton.addEventListener("mouseover", () => openMouseHover("wishlist-card"));
-      wishlistButton.addEventListener("mouseleave", () => closeMouseHover("wishlist-card"));
-      wishlistCard.addEventListener("mouseover", () => openMouseHover("wishlist-card"));
-      wishlistCard.addEventListener("mouseleave", () => closeMouseHover("wishlist-card"));
-      shoppingButton.addEventListener("mouseover", () => openMouseHover("shoppingcart-card"));
-      shoppingButton.addEventListener("mouseleave", () => closeMouseHover("shoppingcart-card"));
-      shoppingCard.addEventListener("mouseover", () => openMouseHover("shoppingcart-card"));
-      shoppingCard.addEventListener("mouseleave", () => closeMouseHover("shoppingcart-card"));
-    }
-
-    return () => {
-      if ((wishlistButton && wishlistCard) || (shoppingButton && shoppingCard)) {
-        wishlistButton.addEventListener("mouseover", () => openMouseHover("wishlist-card"));
-        wishlistButton.addEventListener("mouseleave", () => closeMouseHover("wishlist-card"));
-        wishlistCard.addEventListener("mouseover", () => openMouseHover("wishlist-card"));
-        wishlistCard.addEventListener("mouseleave", () => closeMouseHover("wishlist-card"));
-        shoppingButton.addEventListener("mouseover", () => openMouseHover("shoppingcart-card"));
-        shoppingButton.addEventListener("mouseleave", () => closeMouseHover("shoppingcart-card"));
-        shoppingCard.addEventListener("mouseover", () => openMouseHover("shoppingcart-card"));
-        shoppingCard.addEventListener("mouseleave", () => closeMouseHover("shoppingcart-card"));
-      }
-    };
-  }, []);
-
   const searchBgEffect = () => {
     const searchBox = document.getElementById("search-box");
     if (searchBox) {
@@ -180,9 +149,6 @@ const Navbar = () => {
               >
                 <FaHeart className="size-8" />
               </button>
-              <div id="wishlist-card" className="wishlist-card">
-                Favourite items
-              </div>
             </div>
             <div className="wishlist-container mt-2">
               <button
@@ -194,9 +160,6 @@ const Navbar = () => {
                   4
                 </span>
               </button>
-              <div id="shoppingcart-card" className="wishlist-card">
-                Shopping Items
-              </div>
             </div>
             <div className="hidden xl:flex items-center gap-2 mr-4">
               <div className="mt-2 mr-4">
