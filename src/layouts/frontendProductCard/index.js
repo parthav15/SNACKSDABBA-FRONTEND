@@ -8,6 +8,25 @@ const ProductCard = ({ fetchProducts, title, description }) => {
   const [cart, setCart] = useState({});
   const [wishlist, setWishlist] = useState({});
   const [loading, setLoading] = useState({});
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const fetchMoreProducts = async () => {
+    setIsFetching(true);
+    try {
+      const fetchedProducts = await fetchProducts();
+      if (fetchedProducts.length > 0) {
+        setProducts((prevProducts) => [...prevProducts, ...fetchedProducts]);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      alert("Failed to load more products. Please try again.");
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   const handleBuyClick = async (productId) => {
     const token = localStorage.getItem("userToken");
@@ -41,38 +60,6 @@ const ProductCard = ({ fetchProducts, title, description }) => {
     }
   };
 
-  const handleRemoveClick = async (productId) => {
-    const token = localStorage.getItem("userToken");
-    if (!token) {
-      alert("You need to be logged in to remove items from cart.");
-      return;
-    }
-
-    setLoading((prevLoading) => ({ ...prevLoading, [productId]: true }));
-    const formData = new FormData();
-    formData.append("product_id", productId);
-
-    try {
-      const response = await fetch(`${BASE_URL}api/remove_item_from_cart/`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        setCart((prevCart) => ({ ...prevCart, [productId]: false }));
-        alert(data.message);
-      } else {
-        alert("Failed to remove item from cart.");
-      }
-    } catch (error) {
-      alert("Something went wrong. Please try again later.");
-    } finally {
-      setLoading((prevLoading) => ({ ...prevLoading, [productId]: false }));
-    }
-  };
-
   const handleWishlistClick = (productId) => {
     setWishlist((prevWishlist) => ({
       ...prevWishlist,
@@ -81,13 +68,8 @@ const ProductCard = ({ fetchProducts, title, description }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedProducts = await fetchProducts();
-      setProducts(fetchedProducts);
-    };
-
-    fetchData();
-  }, [fetchProducts]);
+    fetchMoreProducts();
+  }, []);
 
   return (
     <>
@@ -142,18 +124,30 @@ const ProductCard = ({ fetchProducts, title, description }) => {
                 <div className="details">
                   <h1>Added to Cart</h1>
                 </div>
-                <div
-                  className="remove"
-                  onClick={() => handleRemoveClick(product.id)}
-                  disabled={loading[product.id]}
-                >
-                  <i className="material-icons">clear</i>
-                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+      {hasMore && (
+      <div className="text-center mt-6">
+        <button
+          onClick={fetchMoreProducts}
+          disabled={isFetching}
+          className={`bg-gradient-to-r from-cyan-600 to-teal-500 text-white px-8 py-4 rounded ${isFetching ? 'loading' : ''}`}
+        >
+          {isFetching ? (
+            <div className="spinner">
+              <div className="bounce1"></div>
+              <div className="bounce2"></div>
+              <div className="bounce3"></div>
+            </div>
+          ) : (
+            'Load More'
+          )}
+        </button>
+      </div>
+    )}
     </>
   );
 };
