@@ -73,7 +73,7 @@ const ProductCard = ({ fetchProducts, title, description }) => {
 
   return (
     <>
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 mt-6">
         <h1 className="text-4xl font-bold text-gray-900 inline-block relative">
           <span className="text-rose-500">{title.split(" ")[0]}</span>{" "}
           {title.split(" ").slice(1).join(" ")}
